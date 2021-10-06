@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
-import 'package:yoddhafoundation/app/constant/controller.dart';
-import 'package:yoddhafoundation/app/routes/app_pages.dart';
+import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/routes/app_pages.dart';
 
 class SplashController extends GetxController {
   String loading = 'loading';
@@ -22,7 +22,7 @@ class SplashController extends GetxController {
     await appController.init();
     //  print(appController.accesstoken);
     if (appController.accesstoken.isNotEmpty) {
-      Get.offNamed(Routes.dashboard);
+      // Get.offNamed(Routes.dashboard);
     } else {
       Get.toNamed(Routes.login);
     }

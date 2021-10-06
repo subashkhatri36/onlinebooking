@@ -1,3 +1,3 @@
 class AppImage {
-  static const String appLogo = '';
+  static const String appLogo = 'assets/image/booklogo.png';
 }
