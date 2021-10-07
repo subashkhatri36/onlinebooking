@@ -72,7 +72,7 @@ class _InputFieldState extends State<InputField> {
       // width: MediaQuery.of(context).size.width,
       margin: const EdgeInsets.symmetric(
         horizontal: Constants.defaultPadding,
-        vertical: Constants.defaultPadding / 2,
+        vertical: Constants.defaultPadding / 4,
       ),
 
       child: TextFormField(

@@ -1,50 +1,39 @@
 import 'dart:convert';
 
 /*
-{
-    "id": 3,
-    "name": "Sudeep",
-    "email": "bjr.sudeep@gmail.com",
-    "role_id": "2",
-    "email_verified_at": "2021-09-29T07:19:07.000000Z",
-    "status": "1",
-    "created_at": "2021-09-29T07:19:07.000000Z",
-    "updated_at": "2021-09-29T07:19:07.000000Z"
-}
+"id": "3",
+        "name": "Vineeth v",
+        "status": "1",
+        "last_login_time": "1630219340",
+        "last_login_ip": "127.0.0.1",
+        "token": "ut-d03
 
  */
 
 class User {
   final int id;
   final String name;
-  final String email;
-  final int roleId;
-  final DateTime emailVerifiedAt;
-  final String rememberToken;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-
-  User(
-      {required this.id,
-      required this.name,
-      required this.email,
-      required this.roleId,
-      required this.emailVerifiedAt,
-      required this.rememberToken,
-      required this.createdAt,
-      required this.updatedAt});
+  final bool status;
+  final DateTime lastlogin;
+  final String loginIp;
+  final String token;
+  User({
+    required this.id,
+    required this.name,
+    required this.status,
+    required this.lastlogin,
+    required this.loginIp,
+    required this.token,
+  });
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'name': name,
-      'email': email,
-      'roleId': roleId,
-      'email_verified_at': emailVerifiedAt.millisecondsSinceEpoch,
-
-      'rememberToken': rememberToken,
-      'created_at': createdAt.millisecondsSinceEpoch,
-      'updated_at': updatedAt.millisecondsSinceEpoch,
+      'status': status,
+      'last_login_time': lastlogin.millisecondsSinceEpoch,
+      'last_login_ip': loginIp,
+      'token': token,
     };
   }
 
@@ -52,14 +41,10 @@ class User {
     return User(
       id: map['id'],
       name: map['name'],
-      email: map['email'],
-      roleId: map['roleId'],
-      emailVerifiedAt:
-          DateTime.fromMillisecondsSinceEpoch(map['email_verified_at']),
-    
-      rememberToken: map['rememberToken'],
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['created_at']),
-      updatedAt: DateTime.fromMillisecondsSinceEpoch(map['updated_at']),
+      status: map['status'] == 1 ? true : false,
+      lastlogin: DateTime.fromMillisecondsSinceEpoch(map['last_login_time']),
+      loginIp: map['last_login_ip'],
+      token: map['token'],
     );
   }
 

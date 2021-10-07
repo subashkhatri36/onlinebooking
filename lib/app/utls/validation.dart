@@ -11,12 +11,12 @@ String? validatePassword({required String string}) {
   }
 }
 
-String validatePasswordConfirm(
+String? validatePasswordConfirm(
     {required String password, required String cPassword}) {
-  if (password != cPassword) {
+  if (password.trim() != cPassword.trim()) {
     return "Passwords do not match";
   }
-  return '';
+  return null;
 }
 
 /// email validator

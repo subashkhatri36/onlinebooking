@@ -62,8 +62,8 @@ class _InputFieldState extends State<InputField> {
   Widget build(BuildContext context) {
     return (Container(
       margin: const EdgeInsets.only(
-        bottom: Constants.defaultPadding,
-        top: Constants.defaultPadding,
+        bottom: Constants.defaultPadding / 4,
+        top: Constants.defaultPadding / 2,
       ),
       child: TextFormField(
         controller: widget.controller,

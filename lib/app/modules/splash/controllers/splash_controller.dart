@@ -22,7 +22,7 @@ class SplashController extends GetxController {
     await appController.init();
     //  print(appController.accesstoken);
     if (appController.accesstoken.isNotEmpty) {
-      // Get.offNamed(Routes.dashboard);
+      Get.offNamed(Routes.home);
     } else {
       Get.toNamed(Routes.login);
     }

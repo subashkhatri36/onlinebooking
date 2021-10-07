@@ -33,7 +33,7 @@ class NormalText extends StatelessWidget {
           ),
       textAlign: isCentered ? TextAlign.center : null,
       maxLines: maxline,
-      overflow: TextOverflow.clip,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }
