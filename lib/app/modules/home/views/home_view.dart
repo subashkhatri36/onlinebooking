@@ -147,13 +147,14 @@ class HomeView extends GetView<HomeController> {
                                               .homeList[0].bookdetail.length,
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index) {
-                                            BookDetail b = controller
+                                            BookDetailInfo b = controller
                                                 .homeList[0].bookdetail[index];
 
                                             return InkWell(
                                               onTap: () {
                                                 Get.toNamed(
-                                                    Routes.bookdescription);
+                                                    Routes.bookdescription,
+                                                    arguments: b.id);
                                               },
                                               child: TrandingListItems(
                                                 bookImage: b.coverPhoto,
@@ -191,7 +192,10 @@ class HomeView extends GetView<HomeController> {
                                           children: controller
                                               .homeList[0].categorylist
                                               .map((e) => InkWell(
-                                                    onTap: () {},
+                                                    onTap: () {
+                                                      Get.toNamed(
+                                                          Routes.booklist);
+                                                    },
                                                     child: CategoryItemList(
                                                       e: e,
                                                     ),

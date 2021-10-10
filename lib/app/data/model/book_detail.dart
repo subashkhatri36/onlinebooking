@@ -1,12 +1,12 @@
 import 'dart:convert';
 
-class BookDetail {
+class BookDetailInfo {
   final int id;
   final String title;
   final String author;
   final String coverPhoto;
   final String synopsis;
-  BookDetail({
+  BookDetailInfo({
     required this.id,
     required this.title,
     required this.author,
@@ -24,8 +24,8 @@ class BookDetail {
     };
   }
 
-  factory BookDetail.fromMap(Map<String, dynamic> map) {
-    return BookDetail(
+  factory BookDetailInfo.fromMap(Map<String, dynamic> map) {
+    return BookDetailInfo(
       id: map['id'],
       title: map['title'],
       author: map['author'],
@@ -36,6 +36,6 @@ class BookDetail {
 
   String toJson() => json.encode(toMap());
 
-  factory BookDetail.fromJson(String source) =>
-      BookDetail.fromMap(json.decode(source));
+  factory BookDetailInfo.fromJson(String source) =>
+      BookDetailInfo.fromMap(json.decode(source));
 }

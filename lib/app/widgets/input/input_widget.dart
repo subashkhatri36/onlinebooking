@@ -19,6 +19,8 @@ class InputField extends StatefulWidget {
       this.iconColor,
       this.autovalidateMode = AutovalidateMode.onUserInteraction,
       this.borderRadius = 0,
+      this.maxline = 1,
+      this.maxlength = 100,
       this.color = Colors.transparent})
       : super(key: key);
 
@@ -39,6 +41,8 @@ class InputField extends StatefulWidget {
   final double borderRadius;
   final Color color;
   final Color? iconColor;
+  final int maxlength;
+  final int maxline;
 
   @override
   _InputFieldState createState() => _InputFieldState();
@@ -78,11 +82,13 @@ class _InputFieldState extends State<InputField> {
       child: TextFormField(
         controller: widget.controller,
         autovalidateMode: widget.autovalidateMode,
+        maxLines: widget.maxline,
+        maxLength: widget.maxlength,
         decoration: InputDecoration(
           fillColor: widget.color,
           contentPadding: widget.icon != null
               ? const EdgeInsets.fromLTRB(20, 0, 20, 0)
-              : const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              : const EdgeInsets.fromLTRB(10, 0, 10, 0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide: const BorderSide(color: Themes.grey),

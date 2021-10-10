@@ -20,7 +20,7 @@ class HomeAPI {
     final body = {
       'search_keyword': searchkeyword,
     };
-    List<BookDetail> bookdetail = [];
+    List<BookDetailInfo> bookdetail = [];
     List<CategoryList> categorylist = [];
     try {
       final response = await http.post(
@@ -36,7 +36,7 @@ class HomeAPI {
           userapi.status = true;
 
           for (var book in jsonResponse["data"]["bookDetail"]) {
-            bookdetail.add(BookDetail(
+            bookdetail.add(BookDetailInfo(
                 id: int.parse(book["id"].toString()),
                 title: book["title"].toString(),
                 author: book["author"].toString(),

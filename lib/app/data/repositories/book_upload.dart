@@ -1,16 +1,130 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:dio/dio.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:onlinebooks/app/constant/api_link.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/data/model/author_model.dart';
+import 'package:onlinebooks/app/data/model/book_detail_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
+import 'package:async/async.dart';
 
 BookAPI bookUploadAPI = BookAPI();
 
 ///it call all user related work
 class BookAPI {
+  Future<ApiCall> loadBookDetails(String bookId) async {
+    ApiCall bookapi = ApiCall(message: '', status: false);
+    try {
+      final headers = {
+        "token": appController.accesstoken,
+      };
+
+      final response = await http.post(
+        Uri.parse(Api.bookDetails),
+        body: {
+          "book_id": bookId,
+        },
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        var jsonResponse =
+            await json.decode(response.body); //["message"].toString();
+
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          bookapi.status = true;
+          String title =
+              jsonResponse["data"]["bookDetails"]["title"].toString();
+
+          String coverPhoto =
+              jsonResponse["data"]["bookDetails"]["cover_photo"].toString();
+          String author =
+              jsonResponse["data"]["bookDetails"]["author"].toString();
+          String synopsis =
+              jsonResponse["data"]["bookDetails"]["synopsis"].toString();
+          String pdffile =
+              jsonResponse["data"]["bookDetails"]["pdf_file"].toString();
+          String authorId =
+              jsonResponse["data"]["bookDetails"]["author_id"].toString();
+
+          BookDetail books = BookDetail(
+              authorId: authorId,
+              title: title,
+              coverPhoto: coverPhoto,
+              author: author,
+              synopsis: synopsis,
+              pdffile: pdffile);
+          bookapi.response = books;
+        } else {
+          bookapi.status = false;
+          bookapi.message = jsonResponse["message"].toString();
+        }
+
+        // return ApiCall.fromMap(jsonResponse);
+      } else {
+        bookapi.status = false;
+        bookapi.message = "Bad Connection Error.";
+      }
+    } catch (e) {
+      bookapi.status = false;
+      bookapi.message = "Something went wong.";
+    }
+    return bookapi;
+  }
+
+  Future<ApiCall> aboutAuthor(String authorId) async {
+    ApiCall bookapi = ApiCall(message: '', status: false);
+    try {
+      final headers = {
+        "token": appController.accesstoken,
+      };
+
+      final response = await http.post(
+        Uri.parse(Api.bookDetails),
+        body: {
+          "author_id": authorId,
+        },
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        print(response.body);
+        var jsonResponse =
+            await json.decode(response.body); //["message"].toString();
+
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          bookapi.status = true;
+
+          String name = jsonResponse["data"]["name"].toString();
+
+          String about = jsonResponse["data"]["about"].toString();
+          String profile = jsonResponse["data"]["profile_pic"].toString();
+
+          Author author = Author(name: name, about: about, profilePic: profile);
+
+          bookapi.response = author;
+        } else {
+          bookapi.status = false;
+          bookapi.message = jsonResponse["message"].toString();
+        }
+
+        // return ApiCall.fromMap(jsonResponse);
+      } else {
+        bookapi.status = false;
+        bookapi.message = "Bad Connection Error.";
+      }
+    } catch (e) {
+      bookapi.status = false;
+      bookapi.message = "Something went wong.";
+    }
+    return bookapi;
+  }
+
   Future<ApiCall> uploadbooks(
       {required String bookname,
       required String categoryId,
@@ -25,85 +139,55 @@ class BookAPI {
       // create multipart request
       var request = http.MultipartRequest("POST", uri);
 
-      final header = {"token": appController.accesstoken};
+      final headers = {
+        "token": appController.accesstoken,
+        "Content-Type": "multipart/form-data",
+      };
+      print(headers);
 
-      String filebook = bookfile.path.split('/').last;
-      String image = bookcover.path.split('/').last;
-      var formData = FormData.fromMap({
-        "title": bookname,
-        "category_id": "1",
-        "synopsis": synopsis,
-        "cover_image":
-            await MultipartFile.fromFile(bookcover.path, filename: image),
-        "pdf_file":
-            await MultipartFile.fromFile(bookfile.path, filename: filebook),
+      request.files.add(http.MultipartFile(
+          'cover_image',
+          File(bookcover.path).readAsBytes().asStream(),
+          File(bookcover.path).lengthSync(),
+          contentType: MediaType('image', 'jpeg'),
+          filename: bookcover.path.split("/").last));
+
+      request.files.add(http.MultipartFile(
+          'pdf_file',
+          File(bookfile.path).readAsBytes().asStream(),
+          File(bookfile.path).lengthSync(),
+          contentType: MediaType('application', 'pdf'),
+          filename: bookfile.path.split("/").last));
+
+      //add headers
+      request.headers.addAll(headers);
+      request.fields['category_id'] = "1";
+      request.fields['synopsis'] = synopsis;
+      request.fields['title'] = bookname;
+
+      var response = await request.send();
+
+      // listen for response
+      await response.stream.transform(utf8.decoder).listen((value) {
+        if (response.statusCode == 200) {
+          var jsonResponse = json.decode(value); //["message"].toString();
+
+          String val = jsonResponse["status"].toString();
+          if (val.toLowerCase() == 'true') {
+            userapi.status = true;
+          } else {
+            userapi.status = false;
+            print("here");
+          }
+          userapi.message = jsonResponse["message"].toString();
+
+          // return ApiCall.fromMap(jsonResponse);
+        } else {
+          userapi.status = false;
+          userapi.message = "Bad Connection Error.";
+        }
       });
-      Dio dio = Dio();
-      //"token": appController.accesstoken
-      dio.options.headers["token"] = appController.accesstoken;
-      var response = await dio.post(Api.uploadbook, data: formData);
-      print(response);
-
-      // var stream = http.ByteStream(bookcover.openRead());
-      // stream.cast();
-      // // get file length
-      // var length = await bookcover.length(); //imageFile is your image file
-
-      // // multipart that takes file
-      // var multipartFileSign = http.MultipartFile('cover_image', stream, length,
-      //     filename: basename(bookcover.path));
-
-      // var pdf = http.ByteStream(bookfile.openRead());
-      // pdf.cast();
-      // // get file length
-      // var pdflength = await bookfile.length(); //imageFile is your image file
-
-      // // multipart that takes file
-      // var pdfmultipartFileSign = http.MultipartFile('pdf_file', pdf, pdflength,
-      //     filename: basename(bookfile.path));
-
-      // //add headers
-      // request.headers.addAll(header);
-      // request.files.add(multipartFileSign);
-      // request.files.add(pdfmultipartFileSign);
-      // request.fields['category_id'] = "1";
-      // request.fields['synopsis'] = synopsis;
-      // request.fields['title'] = bookname;
-      // request.headers.addAll(header);
-
-      // // send
-      // var response = await request.send();
-
-      // print(response.statusCode);
-
-      // // listen for response
-      // response.stream.transform(utf8.decoder).listen((value) {
-      //   print(value);
-      // });
-
-      ///------------------------------------
-      // print(header);
-
-      // print(bookfile.path);
-      // var coverimage = await http.MultipartFile.fromPath(
-      //     "cover_image", bookcover.readAsBytes(),
-      //     filename: bookcover.path.split("/").last.replaceAll(" ", "_"));
-      // var pdf = await http.MultipartFile.fromPath("pdf_file", bookfile.path,
-      //     filename: bookfile.path.split("/").last.replaceAll(" ", "_"));
-      // request.files.add(coverimage);
-      // request.files.add(pdf);
-      // request.fields['category_id'] = "1";
-      // request.fields['synopsis'] = synopsis;
-      // request.fields['title'] = bookname;
-      // request.headers.addAll(header);
-
-      // var response = await request.send();
-      // var responsed = await http.Response.fromStream(response);
-      // final responseData = json.decode(responsed.body);
-      // print(responseData);
-      // print(response.statusCode);
-
-//
+      return userapi;
     } catch (e) {
       userapi.status = false;
       print(e);

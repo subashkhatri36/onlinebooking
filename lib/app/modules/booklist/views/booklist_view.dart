@@ -5,14 +5,16 @@ import 'package:get/get.dart';
 import '../controllers/booklist_controller.dart';
 
 class BooklistView extends GetView<BooklistController> {
+  const BooklistView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('BooklistView'),
+        title: const Text('BooklistView'),
         centerTitle: true,
       ),
-      body: Center(
+      body: const Center(
         child: Text(
           'BooklistView is working',
           style: TextStyle(fontSize: 20),

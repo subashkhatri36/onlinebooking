@@ -72,31 +72,10 @@ Note : cover_image and pdf_file should be multipart"
     ""error_code"": ""S01"",
     ""message"": ""Successfully uploaded the book"",
     ""show_alert"": ""false""
-}"
- */
-  ///books details
-  ///1)book_id
+}"*/
+
   static const String bookDetails =
       "http://www.programmingly.com/book/Book/BookDetails";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Book Details"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""bookDetails"": {
-            ""title"": ""Test title"",
-            ""cover_photo"": ""http://programmingly.com/book/web/uploads/cover/cover_Test title3_1630260523.jpeg"",
-            ""author"": ""vineeth"",
-            ""synopsis"": ""Test synopsis"",
-            ""pdf_file"": ""http://programmingly.com/book/web/uploads/pdf/book_Test title3_1630260523.pdf"",
-            ""author_id"": ""3""
-        }
-    }
-}"
-
- */
 
 //reading books
 

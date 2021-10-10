@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/book_upload.dart';
 import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 import 'package:path/path.dart';
@@ -79,27 +81,34 @@ class UploadbooksController extends GetxController {
     }
   }
 
-  uploadBookData() {
+  uploadBookData() async {
     uploadingBooks.toggle();
-    bool upload = false;
+
     if (formkey.currentState!.validate()) {
-      bookUploadAPI.uploadbooks(
+      ApiCall api = await bookUploadAPI.uploadbooks(
           bookname: bookname.text,
           categoryId: categoryId,
           synopsis: synposis.text,
           bookcover: coverFile!,
           bookfile: pdfFile!);
 
-      // if (upload) {
-      //   pdf = "";
-      //   pdfFile = null;
-      //   filename = "";
-      //   selectfile.value = false;
-      //   coverImage = "";
-      //   coverFile = null;
-      //   selectCover.value = false;
-      //   customSnackbar(message: "Upload Book Successfully");
-      // }
+      if (api.status) {
+        pdf = "";
+        pdfFile = null;
+        filename = "";
+        selectfile.value = false;
+        coverImage = "";
+        coverFile = null;
+        selectCover.value = false;
+        bookname.text = "";
+        synposis.text = "";
+        customSnackbar(
+            message: "Upload Book Successfully",
+            backgroundColor: Colors.green,
+            leadingIcon: Icons.check);
+      } else {
+        customSnackbar(message: api.message + " msg");
+      }
     }
 
     uploadingBooks.toggle();

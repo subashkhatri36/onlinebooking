@@ -21,9 +21,12 @@ class UploadbooksView extends GetView<UploadbooksController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(
-          Icons.keyboard_backspace_rounded,
-          color: AppColors.black,
+        leading: IconButton(
+          onPressed: () {
+            Get.back();
+          },
+          icon: const Icon(Icons.keyboard_backspace_rounded,
+              color: AppColors.black),
         ),
         backgroundColor: AppColors.white,
         title: const NormalText(
@@ -67,6 +70,8 @@ class UploadbooksView extends GetView<UploadbooksController> {
                     InputField(
                       controller: controller.synposis,
                       hintText: "Synopsis here",
+                      maxlength: 1000,
+                      maxline: 15,
                       validator: (value) => validateIsEmpty(string: value),
                     ),
                     Row(

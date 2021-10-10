@@ -21,8 +21,8 @@ class HeaderText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       text,
-      style: Theme.of(context).textTheme.headline3!.copyWith(
-          fontSize: fontSize != null ? fontSize : null,
+      style: Theme.of(context).textTheme.headline5!.copyWith(
+          fontSize: fontSize,
           fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           decoration: hasUnderline ? TextDecoration.underline : null,
           color: textColor ?? Theme.of(context).primaryColorLight),
