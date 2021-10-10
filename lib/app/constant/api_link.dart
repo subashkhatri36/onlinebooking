@@ -4,53 +4,14 @@ class Api {
   //email,password
   static const String login = 'http://www.programmingly.com/book/Login/Login';
 
-  /*
-      {
-    "status": "true",
-    "error_code": "S01",
-    "message": "Successfully logined",
-    "show_alert": "false",
-    "data": {
-        "id": "3",
-        "name": "Vineeth v",
-        "status": "1",
-        "last_login_time": "1630219340",
-        "last_login_ip": "127.0.0.1",
-        "token": "ut-d0334e2ca352ebb03efc7d986c28e7b073c85f087cd6e0ae324e7a4e0f99255c"
-    }
-} */
-
   //for register username must be email
   //name,username,password,confirmpassword
   static const String register = 'http://www.programmingly.com/book/Register/';
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Successfully registered"",
-    ""show_alert"": ""false""
-}"
- */
+
 //category list
 //
   static const String categoryList =
       'http://www.programmingly.com/book/Category/GetCategoryList';
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Successfully logined"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""id"": ""3"",
-        ""name"": ""Vineeth v"",
-        ""status"": ""1"",
-        ""last_login_time"": ""1630219340"",
-        ""last_login_ip"": ""127.0.0.1"",
-        ""token"": ""ut-d0334e2ca352ebb03efc7d986c28e7b073c85f087cd6e0ae324e7a4e0f99255c""
-    }
-}"
- */
 
   ///profile data
   ///in headerr token : <token value> post

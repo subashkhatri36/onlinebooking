@@ -91,14 +91,19 @@ class LoginView extends GetView<AuthenticationController> {
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: Constants.defaultPadding),
-                          child: CustomButton(
-                            onPressed: () {
-                              controller.login();
-                              // Get.to(DashboardView());
-                            },
-                            label: 'Login',
-                            backgroundColor: AppColors.orangeColor,
-                            textColor: AppColors.white,
+                          child: Obx(
+                            () => controller.islogining.value
+                                ? const Center(
+                                    child: CircularProgressIndicator())
+                                : CustomButton(
+                                    onPressed: () {
+                                      controller.login();
+                                      // Get.to(DashboardView());
+                                    },
+                                    label: 'Login',
+                                    backgroundColor: AppColors.orangeColor,
+                                    textColor: AppColors.white,
+                                  ),
                           ),
                         ),
                       ),

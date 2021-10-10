@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:onlinebooks/app/constant/api_link.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
-import 'package:onlinebooks/app/constant/string.dart';
-import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:onlinebooks/app/data/model/user.dart';
@@ -56,6 +54,8 @@ class LoginAPI {
           String lastlogin = jsonResponse["data"]["last_login_time"].toString();
           String lastloginIp = jsonResponse["data"]["last_login_ip"].toString();
           String token = jsonResponse["data"]["token"].toString();
+          appController.accesstoken = token;
+          print("token" + token);
           appController.user = User(
               id: int.parse(id),
               name: name,
@@ -66,8 +66,8 @@ class LoginAPI {
               token: token);
         } else {
           userapi.status = false;
+          userapi.message = jsonResponse["message"].toString();
         }
-        userapi.message = jsonResponse["message"].toString();
 
         // return ApiCall.fromMap(jsonResponse);
       } else {

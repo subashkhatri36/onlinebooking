@@ -16,7 +16,6 @@ void main() {
       darkTheme: Themes.dark,
       initialRoute: AppPages.initial,
       getPages: AppPages.routes,
-      debugShowCheckedModeBanner: false,
       defaultTransition: Transition.native,
       builder: EasyLoading.init(),
       initialBinding: InitialBinding(),

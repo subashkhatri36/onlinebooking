@@ -10,6 +10,9 @@ abstract class Routes {
   static const register = _Paths.register;
   static const forgetpassword = _Paths.forgetpassword;
   static const profile = _Paths.profile;
+  static const uploadbooks = _Paths.uploadbooks;
+  static const bookdescription = _Paths.bookdescription;
+  static const booklist = _Paths.booklist;
 }
 
 abstract class _Paths {
@@ -19,4 +22,7 @@ abstract class _Paths {
   static const register = '/register';
   static const forgetpassword = '/forgetpassword';
   static const profile = '/profile';
+  static const uploadbooks = '/uploadbooks';
+  static const bookdescription = '/bookdecription';
+  static const booklist = '/booklist';
 }

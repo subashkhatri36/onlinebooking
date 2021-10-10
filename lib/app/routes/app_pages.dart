@@ -4,12 +4,18 @@ import 'package:onlinebooks/app/modules/authentication/bindings/authentication_b
 import 'package:onlinebooks/app/modules/authentication/forgetpassword/forget_password._view.dart';
 import 'package:onlinebooks/app/modules/authentication/login/login_view.dart';
 import 'package:onlinebooks/app/modules/authentication/register/register_view.dart';
+import 'package:onlinebooks/app/modules/bookdecription/bindings/bookdecription_binding.dart';
+import 'package:onlinebooks/app/modules/bookdecription/views/bookdecription_view.dart';
+import 'package:onlinebooks/app/modules/booklist/bindings/booklist_binding.dart';
+import 'package:onlinebooks/app/modules/booklist/views/booklist_view.dart';
 import 'package:onlinebooks/app/modules/home/bindings/home_binding.dart';
 import 'package:onlinebooks/app/modules/home/views/home_view.dart';
 import 'package:onlinebooks/app/modules/profile/bindings/profile_binding.dart';
 import 'package:onlinebooks/app/modules/profile/views/profile_view.dart';
 import 'package:onlinebooks/app/modules/splash/bindings/splash_binding.dart';
 import 'package:onlinebooks/app/modules/splash/views/splash_view.dart';
+import 'package:onlinebooks/app/modules/uploadbooks/bindings/uploadbooks_binding.dart';
+import 'package:onlinebooks/app/modules/uploadbooks/views/uploadbooks_view.dart';
 
 part 'app_routes.dart';
 
@@ -20,6 +26,7 @@ class AppPages {
   static const login = Routes.login;
   static const register = Routes.register;
   static const forgetpassword = Routes.forgetpassword;
+  static const uploadbooks = Routes.uploadbooks;
 
   static final routes = [
     GetPage(
@@ -55,8 +62,23 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.home,
-      page: () => HomeView(),
+      page: () => const HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.uploadbooks,
+      page: () => const UploadbooksView(),
+      binding: UploadbooksBinding(),
+    ),
+    GetPage(
+      name: _Paths.bookdescription,
+      page: () => BookdecriptionView(),
+      binding: BookdecriptionBinding(),
+    ),
+    GetPage(
+      name: _Paths.booklist,
+      page: () => BooklistView(),
+      binding: BooklistBinding(),
     ),
   ];
 }

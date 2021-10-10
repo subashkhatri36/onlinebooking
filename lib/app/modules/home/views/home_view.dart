@@ -5,8 +5,12 @@ import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/data/model/book_detail.dart';
 import 'package:onlinebooks/app/data/model/category_list.dart';
+import 'package:onlinebooks/app/data/repositories/home_api.dart';
+import 'package:onlinebooks/app/modules/home/widgets/drawer.dart';
 import 'package:onlinebooks/app/modules/home/widgets/tranding_list_item_widget.dart';
+import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/clipper/header_clip_path.dart';
@@ -21,6 +25,7 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
+    controller.gettingHomeData();
     return authorizedAccess(WillPopScope(
       onWillPop: () async {
         final data = await showDialog(
@@ -50,6 +55,8 @@ class HomeView extends GetView<HomeController> {
         return data;
       },
       child: Scaffold(
+        key: controller.scaffoldKey,
+        drawer: const MainDrawer(),
         body: SafeArea(
           child: Column(
             children: [
@@ -62,7 +69,13 @@ class HomeView extends GetView<HomeController> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        if (controller.scaffoldKey.currentState!.isDrawerOpen) {
+                          controller.scaffoldKey.currentState!.openEndDrawer();
+                        } else {
+                          controller.scaffoldKey.currentState!.openDrawer();
+                        }
+                      },
                       child: const Padding(
                         padding: EdgeInsets.only(right: 8.0),
                         child: Icon(Icons.sort),
@@ -119,17 +132,39 @@ class HomeView extends GetView<HomeController> {
                         SizedBox(
                             width: appController.width,
                             height: appController.height * .35,
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: 5,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) {
-                                  return TrandingListItems(
-                                    bookname: 'Rich Dad and Poor Dad',
-                                    authorname: 'Tokey',
-                                    backgroundColor: AppColors.list1color,
-                                  );
-                                })),
+                            child: Obx(
+                              () => controller.isloadingdata.value
+                                  ? const Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : controller.homeList.isEmpty
+                                      ? const Center(
+                                          child: NormalText("No Books"),
+                                        )
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: controller
+                                              .homeList[0].bookdetail.length,
+                                          scrollDirection: Axis.horizontal,
+                                          itemBuilder: (context, index) {
+                                            BookDetail b = controller
+                                                .homeList[0].bookdetail[index];
+
+                                            return InkWell(
+                                              onTap: () {
+                                                Get.toNamed(
+                                                    Routes.bookdescription);
+                                              },
+                                              child: TrandingListItems(
+                                                bookImage: b.coverPhoto,
+                                                bookname: b.title,
+                                                authorname: b.author,
+                                                backgroundColor:
+                                                    AppColors.list1color,
+                                              ),
+                                            );
+                                          }),
+                            )),
                         const HeightWidget(h: .02),
                         const HeaderTitle(
                           headerText: 'Categories',
@@ -142,66 +177,27 @@ class HomeView extends GetView<HomeController> {
                                   ? const Center(
                                       child: CircularProgressIndicator(),
                                     )
-                                  : GridView.count(
-                                      crossAxisCount: 2,
-                                      childAspectRatio: 4 / 1,
-                                      crossAxisSpacing: 3,
-                                      mainAxisSpacing: 6,
-                                      //physics:NeverScroll(),
-                                      // padding: EdgeInsets.all(10.0),
-                                      children: controller.categoryList
-                                          .map((e) => InkWell(
-                                                onTap: () {},
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  children: [
-                                                    Container(
-                                                      margin: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: Constants
-                                                                  .defaultMargin /
-                                                              2),
-                                                      padding: const EdgeInsets
-                                                              .symmetric(
-                                                          horizontal: Constants
-                                                              .defaultPadding,
-                                                          vertical: Constants
-                                                                  .defaultPadding /
-                                                              4),
-                                                      decoration: BoxDecoration(
-                                                          color: AppColors
-                                                              .categoryColor,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      20)),
-                                                      child: Row(
-                                                        children: [
-                                                          Image.asset(
-                                                            e.image,
-                                                            fit: BoxFit
-                                                                .fitHeight,
-                                                            height: Constants
-                                                                    .defaultMargin *
-                                                                1.5,
-                                                          ),
-                                                         const SizedBox(
-                                                            width: 5,
-                                                          ),
-                                                          NormalText(
-                                                            e.name,
-                                                            isBold: true,
-                                                            isCentered: true,
-                                                          )
-                                                        ],
-                                                      ),
+                                  : controller.homeList.isEmpty
+                                      ? const Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : GridView.count(
+                                          crossAxisCount: 2,
+                                          childAspectRatio: 4 / 1,
+                                          crossAxisSpacing: 3,
+                                          mainAxisSpacing: 6,
+                                          //physics:NeverScroll(),
+                                          // padding: EdgeInsets.all(10.0),
+                                          children: controller
+                                              .homeList[0].categorylist
+                                              .map((e) => InkWell(
+                                                    onTap: () {},
+                                                    child: CategoryItemList(
+                                                      e: e,
                                                     ),
-                                                  ],
-                                                ),
-                                              ))
-                                          .toList(),
-                                    ),
+                                                  ))
+                                              .toList(),
+                                        ),
                             )),
                       ],
                     ),
@@ -213,6 +209,47 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
     ));
+  }
+}
+
+class CategoryItemList extends StatelessWidget {
+  const CategoryItemList({Key? key, required this.e}) : super(key: key);
+  final CategoryList e;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          margin: const EdgeInsets.symmetric(
+              horizontal: Constants.defaultMargin / 2),
+          padding: const EdgeInsets.symmetric(
+              horizontal: Constants.defaultPadding,
+              vertical: Constants.defaultPadding / 4),
+          decoration: BoxDecoration(
+              color: AppColors.categoryColor,
+              borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              Image.network(
+                e.image,
+                fit: BoxFit.fitHeight,
+                height: Constants.defaultMargin * 1.5,
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              NormalText(
+                e.name,
+                isBold: true,
+                isCentered: true,
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 

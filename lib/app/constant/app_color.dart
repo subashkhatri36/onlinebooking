@@ -5,9 +5,11 @@ class AppColors {
   static Color primaryColor = HexColor('#fff');
   static Color circleAvatarColor = HexColor('#7fea52');
   static Color orangeColor = Colors.deepOrange;
+  static Color yellow = Colors.yellow;
   static const Color white = Colors.white;
   static const Color black = Colors.black;
   static const Color grey = Colors.grey;
+  static const Color blue = Colors.blue;
 
   //textcolor
   static Color textColor = HexColor("#424443");

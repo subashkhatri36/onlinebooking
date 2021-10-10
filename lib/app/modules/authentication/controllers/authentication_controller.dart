@@ -21,8 +21,11 @@ class AuthenticationController extends GetxController {
   final TextEditingController regpassword = TextEditingController();
   final TextEditingController regconpassword = TextEditingController();
   final GlobalKey<FormState> registrationformkey = GlobalKey<FormState>();
+  RxBool islogining = false.obs;
 
   void login() async {
+    islogining.toggle();
+
     if (formkey.currentState!.validate()) {
       //do what we want to do
       //call api
@@ -47,6 +50,7 @@ class AuthenticationController extends GetxController {
           snackPosition: SnackPosition.TOP,
           leadingIcon: Icons.warning);
     }
+    islogining.toggle();
   }
 
   void registration() async {
@@ -98,5 +102,8 @@ class AuthenticationController extends GetxController {
    */
 
   @override
-  void onClose() {}
+  void onClose() {
+    // registrationformkey.currentWidget.di();
+    // formkey.dispose();
+  }
 }
