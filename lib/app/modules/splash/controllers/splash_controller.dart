@@ -24,7 +24,7 @@ class SplashController extends GetxController {
     if (appController.accesstoken.isNotEmpty) {
       Get.offNamed(Routes.home);
     } else {
-      Get.toNamed(Routes.login);
+      Get.offNamed(Routes.login);
     }
   }
 

@@ -23,7 +23,7 @@ class AppController extends GetxController {
   }
 
   Future loadDatabase() async {
-    accesstoken = ""; // await shareprefrence.read(Strings.logintoken);
+    accesstoken = "";//await shareprefrence.read(Strings.logintoken);
 
     if (accesstoken.isNotEmpty) {
       authorized = true;
