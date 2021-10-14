@@ -16,6 +16,8 @@ import 'package:onlinebooks/app/modules/profile/bindings/profile_binding.dart';
 import 'package:onlinebooks/app/modules/profile/views/profile_view.dart';
 import 'package:onlinebooks/app/modules/savedbook/bindings/savedbook_binding.dart';
 import 'package:onlinebooks/app/modules/savedbook/views/savedbook_view.dart';
+import 'package:onlinebooks/app/modules/search/bindings/search_binding.dart';
+import 'package:onlinebooks/app/modules/search/views/search_view.dart';
 import 'package:onlinebooks/app/modules/splash/bindings/splash_binding.dart';
 import 'package:onlinebooks/app/modules/splash/views/splash_view.dart';
 import 'package:onlinebooks/app/modules/transaction/bindings/transaction_binding.dart';
@@ -103,6 +105,11 @@ class AppPages {
       name: _Paths.transaction,
       page: () => const TransactionView(),
       binding: TransactionBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH,
+      page: () => SearchView(),
+      binding: SearchBinding(),
     ),
   ];
 }

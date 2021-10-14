@@ -61,6 +61,9 @@ class BookListItems extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Get.toNamed(Routes.bookdescription, arguments: e.id);
+      },
       isThreeLine: true,
       leading: SizedBox(
         height: appController.height * .4,

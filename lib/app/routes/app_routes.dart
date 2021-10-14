@@ -16,6 +16,7 @@ abstract class Routes {
   static const bookread = _Paths.bookread;
   static const savedbook = _Paths.savedbook;
   static const transaction = _Paths.transaction;
+  static const SEARCH = _Paths.SEARCH;
 }
 
 abstract class _Paths {
@@ -31,4 +32,5 @@ abstract class _Paths {
   static const bookread = '/bookread';
   static const savedbook = '/savedbook';
   static const transaction = '/transaction';
+  static const SEARCH = '/search';
 }

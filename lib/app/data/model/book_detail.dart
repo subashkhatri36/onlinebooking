@@ -6,13 +6,18 @@ class BookDetailInfo {
   final String author;
   final String coverPhoto;
   final String synopsis;
-  BookDetailInfo({
-    required this.id,
-    required this.title,
-    required this.author,
-    required this.coverPhoto,
-    required this.synopsis,
-  });
+  String? pdf;
+  bool? status;
+  bool? bookmark;
+  BookDetailInfo(
+      {required this.id,
+      required this.title,
+      required this.author,
+      required this.coverPhoto,
+      required this.synopsis,
+      this.bookmark,
+      this.pdf,
+      this.status});
 
   Map<String, dynamic> toMap() {
     return {

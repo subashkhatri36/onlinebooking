@@ -4,9 +4,11 @@ import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/constant/string.dart';
 import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/home_model.dart';
+import 'package:onlinebooks/app/data/model/profileData_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/home_api.dart';
 import 'package:onlinebooks/app/data/repositories/login_api_call.dart';
+import 'package:onlinebooks/app/data/repositories/profile_data.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 
@@ -22,6 +24,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     gettingHomeData();
+    loadProfile();
   }
 
   logout() async {
@@ -69,6 +72,16 @@ class HomeController extends GetxController {
     // ];
     // categoryList = categoryLists.obs;
     isloadingdata.toggle();
+  }
+
+  ProfileData? profileData;
+  void loadProfile() async {
+    ApiCall response = await profileAPI.loadProfile();
+    if (response.status) {
+      profileData = response.response;
+    } else {
+      customSnackbar(message: response.message);
+    }
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
+import 'package:onlinebooks/app/widgets/loading_widget.dart';
 import 'package:onlinebooks/app/widgets/text/header_widget.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
 
@@ -24,17 +25,7 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
       body: SafeArea(
         child: Obx(
           () => controller.isloadingBook.value
-              ? Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      NormalText("Loading..."),
-                      HeightWidget(h: .01),
-                      CircularProgressIndicator()
-                    ],
-                  ),
-                )
+              ? const LoadingWidget()
               : controller.bookDetail == null
                   ? const Center(
                       child: NormalText("No Data Found Try Again."),

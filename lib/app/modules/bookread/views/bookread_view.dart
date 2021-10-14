@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../controllers/bookread_controller.dart';
 
@@ -13,34 +14,31 @@ class BookreadView extends GetView<BookreadController> {
 
   @override
   Widget build(BuildContext context) {
+    print(argument);
     return Scaffold(
-      appBar: AppBar(
-        leading: InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: const Icon(
-            Icons.keyboard_backspace,
-            color: AppColors.black,
+        appBar: AppBar(
+          leading: InkWell(
+            onTap: () {
+              Get.back();
+            },
+            child: const Icon(
+              Icons.keyboard_backspace,
+              color: AppColors.black,
+            ),
           ),
+          title: NormalText(
+            '${argument[0]}',
+            color: AppColors.black,
+            isBold: true,
+          ),
+          centerTitle: true,
+          elevation: 0,
+          backgroundColor: AppColors.white,
         ),
-        title: NormalText(
-          '${argument[0]}',
-          color: AppColors.black,
-          isBold: true,
-        ),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: AppColors.white,
-      ),
-      body: const Padding(
-        padding: EdgeInsets.all(Constants.defaultPadding),
-        child: NormalText(
-          'BookreadView is working',
-          fontSize: Constants.defaultFontSize + 5,
-        ),
-      ),
-    );
+        body: Padding(
+            padding: const EdgeInsets.all(Constants.defaultPadding),
+            child: SfPdfViewer.network(
+                'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')));
   }
 }
 

@@ -110,12 +110,25 @@ class HomeView extends GetView<HomeController> {
                                             width: appController.width * .7,
                                             child: Stack(
                                               children: [
-                                                const Center(
-                                                  child: CircleAvatar(
-                                                    radius: 60,
-                                                    backgroundImage: AssetImage(
-                                                        AppImage.appLogo),
-                                                  ),
+                                                Center(
+                                                  child:
+                                                      controller.profileData ==
+                                                              null
+                                                          ? const CircleAvatar(
+                                                              radius: 60,
+                                                              backgroundImage:
+                                                                  AssetImage(
+                                                                      AppImage
+                                                                          .appLogo),
+                                                            )
+                                                          : CircleAvatar(
+                                                              radius: 60,
+                                                              backgroundImage:
+                                                                  NetworkImage(
+                                                                      controller
+                                                                          .profileData!
+                                                                          .profile),
+                                                            ),
                                                 ),
                                                 Positioned(
                                                     right: 0,
@@ -138,8 +151,10 @@ class HomeView extends GetView<HomeController> {
                                               ],
                                             ),
                                           ),
-                                          const NormalText(
-                                            "username",
+                                          NormalText(
+                                            controller.profileData == null
+                                                ? "username"
+                                                : controller.profileData!.name,
                                             isBold: true,
                                             isCentered: true,
                                           ),
