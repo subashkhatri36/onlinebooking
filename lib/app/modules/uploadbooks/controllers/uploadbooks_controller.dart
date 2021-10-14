@@ -94,6 +94,7 @@ class UploadbooksController extends GetxController {
             snackPosition: SnackPosition.TOP,
           );
         } else {
+          print("here");
           ApiCall api = await bookUploadAPI.uploadbooks(
               bookname: bookname.text,
               categoryId: categoryId,

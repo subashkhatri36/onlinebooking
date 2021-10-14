@@ -14,7 +14,7 @@ class BookreadView extends GetView<BookreadController> {
 
   @override
   Widget build(BuildContext context) {
-    print(argument);
+    print(argument[1]);
     return Scaffold(
         appBar: AppBar(
           leading: InkWell(
@@ -37,8 +37,9 @@ class BookreadView extends GetView<BookreadController> {
         ),
         body: Padding(
             padding: const EdgeInsets.all(Constants.defaultPadding),
-            child: SfPdfViewer.network(
-                'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf')));
+            child: argument[1].isNotEmpty
+                ? SfPdfViewer.network(argument[1])
+                : Container()));
   }
 }
 
