@@ -19,7 +19,6 @@ class TrandingListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(bookImage);
     String image = bookImage.isEmpty
         ? "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg"
         : bookImage;

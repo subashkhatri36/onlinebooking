@@ -7,7 +7,6 @@ import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/constant/string.dart';
 import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
-import 'package:onlinebooks/app/data/model/booklist_model.dart';
 import 'package:onlinebooks/app/data/model/profileData_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
@@ -44,24 +43,7 @@ class ProfileAPI {
       request.fields['about'] = about;
 
       var response = await request.send();
-
-      // listen for response
-      response.stream.transform(utf8.decoder).listen((value) {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(value); //["message"].toString();
-
-          String val = jsonResponse["status"].toString();
-          if (val.toLowerCase() == 'true') {
-            userapi.status = true;
-          } else {
-            userapi.status = false;
-          }
-          userapi.message = jsonResponse["message"].toString();
-        } else {
-          userapi.status = false;
-          userapi.message = "Bad Connection Error.";
-        }
-      });
+      userapi.response = response;
       return userapi;
     } catch (e) {
       userapi.status = false;

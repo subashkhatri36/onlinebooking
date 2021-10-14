@@ -12,13 +12,14 @@ class HeaderText extends StatelessWidget {
 
   const HeaderText(
     this.text, {
+    Key? key,
     this.fontSize,
     this.isBold = true,
     this.hasUnderline = false,
     this.isCentered = false,
     this.textColor,
     this.maxline = 1,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

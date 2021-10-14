@@ -75,7 +75,6 @@ class HomeAPI {
       }
     } catch (e) {
       userapi.status = false;
-      print(e);
       userapi.message = e.toString();
     }
     return userapi;

@@ -6,7 +6,6 @@ import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
-import 'package:onlinebooks/app/data/model/category_list.dart';
 import 'package:onlinebooks/app/modules/home/widgets/category_items.dart';
 import 'package:onlinebooks/app/modules/home/widgets/drawer.dart';
 import 'package:onlinebooks/app/modules/home/widgets/tranding_list_item_widget.dart';
@@ -126,6 +125,7 @@ class HomeView extends GetView<HomeController> {
                                                             .pop(true);
                                                       },
                                                       child: const CircleAvatar(
+                                                        radius: 15,
                                                         backgroundColor:
                                                             AppColors.black,
                                                         child: Icon(
@@ -260,7 +260,7 @@ class HomeView extends GetView<HomeController> {
                     child: Column(
                       children: [
                         const HeaderTitle(
-                          headerText: 'Tranding',
+                          headerText: 'Trending',
                         ),
                         SizedBox(
                             width: appController.width,

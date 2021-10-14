@@ -12,6 +12,83 @@ BookAPI bookUploadAPI = BookAPI();
 
 ///it call all user related work
 class BookAPI {
+  Future<ApiCall> removeBookmark(String bookId) async {
+    ApiCall bookapi = ApiCall(message: '', status: false);
+    try {
+      final headers = {
+        "token": appController.accesstoken,
+      };
+
+      final response = await http.post(
+        Uri.parse(Api.bookmark),
+        body: {"book_id": bookId, "action": "2"},
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse =
+            await json.decode(response.body); //["message"].toString();
+
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          bookapi.status = true;
+          bookapi.response = '';
+        } else {
+          bookapi.status = false;
+          bookapi.message = jsonResponse["message"].toString();
+        }
+
+        // return ApiCall.fromMap(jsonResponse);
+      } else {
+        bookapi.status = false;
+        bookapi.message = "Bad Connection Error.";
+      }
+    } catch (e) {
+      bookapi.status = false;
+      bookapi.message = "Something went wong.";
+    }
+    return bookapi;
+  }
+
+  Future<ApiCall> addBookmark(String bookId) async {
+    ApiCall bookapi = ApiCall(message: '', status: false);
+    try {
+      final headers = {
+        "token": appController.accesstoken,
+      };
+
+      final response = await http.post(
+        Uri.parse(Api.bookmark),
+        body: {"book_id": bookId, "action": "1"},
+        headers: headers,
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse =
+            await json.decode(response.body); //["message"].toString();
+
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          bookapi.status = true;
+          bookapi.response = '';
+          // bookapi.response = books;
+        } else {
+          bookapi.status = false;
+          bookapi.message = jsonResponse["message"].toString();
+        }
+
+        // return ApiCall.fromMap(jsonResponse);
+      } else {
+        bookapi.status = false;
+        bookapi.message = "Bad Connection Error.";
+      }
+    } catch (e) {
+      bookapi.status = false;
+      bookapi.message = "Something went wong.";
+    }
+    return bookapi;
+  }
+
   Future<ApiCall> loadBookDetails(String bookId) async {
     ApiCall bookapi = ApiCall(message: '', status: false);
     try {
@@ -47,6 +124,16 @@ class BookAPI {
               jsonResponse["data"]["bookDetails"]["pdf_file"].toString();
           String authorId =
               jsonResponse["data"]["bookDetails"]["author_id"].toString();
+          bool status =
+              jsonResponse["data"]["bookDetails"]["status"].toString() == "1"
+                  ? true
+                  : false;
+          bool bookmark = jsonResponse["data"]["bookDetails"]
+                          ["book_mark_status"]
+                      .toString() ==
+                  "true"
+              ? true
+              : false;
 
           BookDetail books = BookDetail(
               authorId: authorId,
@@ -54,7 +141,9 @@ class BookAPI {
               coverPhoto: coverPhoto,
               author: author,
               synopsis: synopsis,
-              pdffile: pdffile);
+              pdffile: pdffile,
+              bookmark: bookmark,
+              status: status);
           bookapi.response = books;
         } else {
           bookapi.status = false;
@@ -139,6 +228,7 @@ class BookAPI {
       final headers = {
         "token": appController.accesstoken,
         "Content-Type": "multipart/form-data",
+        "Connection": "Keep-Alive"
       };
 
       request.files.add(http.MultipartFile(
@@ -157,31 +247,13 @@ class BookAPI {
 
       //add headers
       request.headers.addAll(headers);
-      request.fields['category_id'] = "1";
+      request.fields['category_id'] = categoryId;
       request.fields['synopsis'] = synopsis;
       request.fields['title'] = bookname;
 
       var response = await request.send();
 
-      // listen for response
-      response.stream.transform(utf8.decoder).listen((value) {
-        if (response.statusCode == 200) {
-          var jsonResponse = json.decode(value); //["message"].toString();
-
-          String val = jsonResponse["status"].toString();
-          if (val.toLowerCase() == 'true') {
-            userapi.status = true;
-          } else {
-            userapi.status = false;
-          }
-          userapi.message = jsonResponse["message"].toString();
-
-          // return ApiCall.fromMap(jsonResponse);
-        } else {
-          userapi.status = false;
-          userapi.message = "Bad Connection Error.";
-        }
-      });
+      userapi.response = response;
       return userapi;
     } catch (e) {
       userapi.status = false;
@@ -190,15 +262,3 @@ class BookAPI {
     return userapi;
   }
 }
-/*
-
-uploadFile() async {
-    var postUri = Uri.parse("<APIUrl>");
-    var request = new http.MultipartRequest("POST", postUri);
-    request.fields['user'] = 'blah';
-    request.files.add(new http.MultipartFile.fromBytes('file', await File.fromUri("<path/to/file>").readAsBytes(), contentType: new MediaType('image', 'jpeg')))
-
-    request.send().then((response) {
-      if (response.statusCode == 200) print("Uploaded!");
-    });
-  } */

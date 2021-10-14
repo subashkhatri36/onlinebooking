@@ -20,7 +20,7 @@ class InputField extends StatefulWidget {
       this.autovalidateMode = AutovalidateMode.onUserInteraction,
       this.borderRadius = 0,
       this.maxline = 1,
-      this.maxlength = 100,
+      this.maxlength,
       this.color = Colors.transparent})
       : super(key: key);
 
@@ -41,7 +41,7 @@ class InputField extends StatefulWidget {
   final double borderRadius;
   final Color color;
   final Color? iconColor;
-  final int maxlength;
+  final int? maxlength;
   final int maxline;
 
   @override

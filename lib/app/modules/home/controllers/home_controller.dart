@@ -26,7 +26,7 @@ class HomeController extends GetxController {
 
   logout() async {
     bool val = await userlogin.logout(appController.accesstoken);
-    print(val);
+
     if (val) {
       //logout
       await shareprefrence.remove(Strings.logintoken);

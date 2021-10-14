@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/themes.dart';
 

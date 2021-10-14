@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -100,61 +101,58 @@ class UploadbooksController extends GetxController {
               bookcover: coverFile!,
               bookfile: pdfFile!);
 
-          if (api.status) {
-            Get.find<HomeController>().gettingHomeData();
-            pdf = "";
-            pdfFile = null;
-            filename = "";
-            selectfile.value = false;
-            coverImage = "";
-            coverFile = null;
-            selectCover.value = false;
-            bookname.text = "";
-            synposis.text = "";
-            customSnackbar(
-                message: "Upload Book Successfully",
-                backgroundColor: Colors.green,
-                leadingIcon: Icons.check);
-            Get.back();
-          } else {
-            customSnackbar(message: api.message + " msg");
-          }
+          // listen for response
+          api.response.stream.transform(utf8.decoder).listen((value) {
+            if (api.response.statusCode == 200) {
+              var jsonResponse = json.decode(value); //["message"].toString();
+
+              String val = jsonResponse["status"].toString();
+              if (val.toLowerCase() == 'true') {
+                Get.find<HomeController>().gettingHomeData();
+                pdf = "";
+                pdfFile = null;
+                filename = "";
+                selectfile.value = false;
+                coverImage = "";
+                coverFile = null;
+                selectCover.value = false;
+                bookname.text = "";
+                synposis.text = "";
+                Get.back();
+                customSnackbar(
+                    message: "Upload Book Successfully",
+                    backgroundColor: Colors.green,
+                    leadingIcon: Icons.check);
+              } else {
+                customSnackbar(
+                  message: jsonResponse["message"].toString(),
+                  backgroundColor: AppColors.red,
+                );
+              }
+              // return ApiCall.fromMap(jsonResponse);
+            } else {
+              customSnackbar(
+                message: "Bad Connection Error.",
+                backgroundColor: AppColors.red,
+              );
+            }
+          });
         }
       } else {
-        customSnackbar(message: "Please Select Category");
+        customSnackbar(
+          message: "Please Select Category",
+          backgroundColor: AppColors.red,
+        );
       }
+    } else {
+      customSnackbar(
+        message: "Please Fill All Data.",
+        backgroundColor: AppColors.red,
+      );
     }
 
     uploadingBooks.toggle();
   }
-
-  /*
-   (String filename, String url) async {
-  var request = http.MultipartRequest('POST', Uri.parse(url));
-  request.files.add(
-    await http.MultipartFile.fromPath(
-      'pdf',
-      filename
-    )
-  );
-  var res = await request.send();
-}
-  
-   */
-
-  /*
-  
-  FilePickerResult? result = await FilePicker.platform.pickFiles(allowMultiple: true);
-
-if (result != null) {
-  List<File> files = result.paths.map((path) => File(path)).toList();
-} else {
-  // User canceled the picker
-}
-  
-  
-  
-   */
 
   @override
   void onClose() {}

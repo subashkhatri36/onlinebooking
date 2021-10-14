@@ -28,15 +28,18 @@ class BookdecriptionController extends GetxController
     bookId = id.toString();
     ApiCall apiCall = await bookUploadAPI.loadBookDetails(bookId);
     if (apiCall.status) {
-      String authoriId = apiCall.response.authorId;
-      print(authoriId);
+      // String authoriId = apiCall.response.authorId;
+
       bookDetail = BookDetail(
           authorId: apiCall.response.authorId,
           title: apiCall.response.title,
           coverPhoto: apiCall.response.coverPhoto,
           author: apiCall.response.author,
           synopsis: apiCall.response.synopsis,
-          pdffile: apiCall.response.pdffile);
+          pdffile: apiCall.response.pdffile,
+          bookmark: apiCall.response.bookmark,
+          status: apiCall.response.status);
+      isbookmarked.value = apiCall.response.bookmark;
 
       //getting author too// apiCall.response;
 
@@ -47,8 +50,22 @@ class BookdecriptionController extends GetxController
     isloadingBook.toggle();
   }
 
-  bookmarks() {
-    isbookmarked.value = !isbookmarked.value;
+  bookmarks() async {
+    if (isbookmarked.value) {
+      //remove
+      ApiCall api = await bookUploadAPI.removeBookmark(bookId);
+      if (api.status) {
+        api.response = "";
+        isbookmarked.value = !isbookmarked.value;
+      }
+    } else {
+      ApiCall api = await bookUploadAPI.addBookmark(bookId);
+      if (api.status) {
+        api.response = "";
+        isbookmarked.value = !isbookmarked.value;
+      }
+      //add
+    }
   }
 
   loadAuthorInfo() async {
@@ -64,11 +81,6 @@ class BookdecriptionController extends GetxController
       customSnackbar(message: authorcall.message);
     }
     isAuthorLoad.toggle();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override

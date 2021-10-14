@@ -81,7 +81,7 @@ class _InputFieldState extends State<InputField> {
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Themes.grey),
           ),
-          prefixIcon: widget.icon != null ? new Icon(widget.icon) : null,
+          prefixIcon: widget.icon != null ? Icon(widget.icon) : null,
           labelText: widget.label,
           hintText: widget.hintText,
           hintStyle: const TextStyle(

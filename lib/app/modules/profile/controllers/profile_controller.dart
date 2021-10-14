@@ -1,8 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/data/model/profileData_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/profile_data.dart';
@@ -17,14 +20,14 @@ class ProfileController extends GetxController {
   RxBool isEditing = false.obs;
   ProfileData? profileData;
   RxBool isDataLoaded = false.obs;
-  RxBool selectCover = false.obs;
+  RxBool isupdating = false.obs;
 
   String profileImage = '';
   File? profile;
   RxBool profileImageSelected = false.obs;
 
   removePhoto() {
-    selectCover.value = false;
+    profileImageSelected.value = false;
     profileImage = "";
     profile = null;
   }
@@ -38,10 +41,10 @@ class ProfileController extends GetxController {
     if (result != null) {
       profileImage = result.files.single.path!;
       profile = File(result.files.single.path!);
-      selectCover.value = true;
+      profileImageSelected.value = true;
     } else {
       // User canceled the picker
-      selectCover.value = false;
+      profileImageSelected.value = false;
     }
   }
 
@@ -55,20 +58,50 @@ class ProfileController extends GetxController {
   void onClose() {}
 
   void saveProfile() async {
+    isupdating.toggle();
     if (profileImage.isNotEmpty) {
       if (formkey.currentState!.validate()) {
         ApiCall api = await profileAPI.updateProfile(
             name: username.text, about: about.text, profile: profileImage);
-        if (api.status) {
-          loadProfile();
-          isEditing.value = false;
-        } else {
-          customSnackbar(message: api.message);
-        }
+
+        // listen for response
+        api.response.stream.transform(utf8.decoder).listen((value) async {
+          if (api.response.statusCode == 200) {
+            var jsonResponse = json.decode(value);
+
+            String val = jsonResponse["status"].toString();
+            if (val.toLowerCase() == 'true') {
+              String name = await jsonResponse["data"]["name"];
+              String about = await jsonResponse["data"]["about"];
+              String profile = await jsonResponse["data"]["profile_pic"];
+              profileData = ProfileData(
+                  name: name,
+                  about: about,
+                  profile: profile,
+                  booklist: profileData!.booklist);
+              isEditing.value = false;
+              customSnackbar(
+                  message: "Successfully Updated",
+                  backgroundColor: Colors.green);
+              // userapi.response = profileData;
+            } else {
+              customSnackbar(
+                  message: jsonResponse["message"].toString(),
+                  backgroundColor: AppColors.red);
+            }
+          } else {
+            customSnackbar(
+                message: "Bad Connection Error.",
+                backgroundColor: AppColors.red);
+          }
+        });
       }
     } else {
-      customSnackbar(message: "Please Select Profile Image");
+      customSnackbar(
+          message: "Please Select Profile Image",
+          backgroundColor: AppColors.red);
     }
+    isupdating.toggle();
   }
 
   void loadProfile() async {
@@ -76,7 +109,6 @@ class ProfileController extends GetxController {
     ApiCall response = await profileAPI.loadProfile();
     if (response.status) {
       profileData = response.response;
-      print(response.response);
     } else {
       customSnackbar(message: response.message);
     }

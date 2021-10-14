@@ -3,9 +3,9 @@
 import 'package:onlinebooks/app/data/model/book_detail.dart';
 
 class ProfileData {
-  final String name;
-  final String about;
-  final String profile;
+  String name;
+  String about;
+  String profile;
   final List<BookDetailInfo> booklist;
 
   ProfileData({

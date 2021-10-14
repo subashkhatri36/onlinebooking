@@ -53,100 +53,112 @@ class ProfileView extends GetView<ProfileController> {
                   : Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const HeaderWidget(),
-                          const HeightWidget(h: .01),
-                          Obx(
-                            () => controller.isEditing.value
-                                ? Align(
-                                    alignment: Alignment.centerRight,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: Constants.defaultPadding),
-                                      child: CustomButton(
-                                          textColor: AppColors.white,
-                                          backgroundColor:
-                                              AppColors.orangeColor,
-                                          label: "Saved",
-                                          onPressed: () {
-                                            controller.saveProfile();
-                                          }),
-                                    ))
-                                : Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const NormalText(
-                                        "About",
-                                        color: AppColors.grey,
-                                        fontSize: Constants.defaultFontSize + 5,
-                                        isBold: true,
-                                      ),
-                                      const HeightWidget(h: .01),
-                                      controller.profileData!.about.isNotEmpty
-                                          ? NormalText(
-                                              controller.profileData!.about,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: const Icon(Icons.keyboard_backspace),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  controller.isEditing.value = true;
+                                },
+                                child: const NormalText("Edit"),
+                              )
+                            ],
+                          ),
+                          Expanded(
+                              child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                Obx(
+                                  () => !controller.isEditing.value
+                                      ? const ProfileInfoDisplay()
+                                      : const InsertProfile(),
+                                ),
+                                const HeightWidget(h: .01),
+                                Obx(
+                                  () => controller.isEditing.value
+                                      ? Align(
+                                          alignment: Alignment.centerRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right:
+                                                    Constants.defaultPadding),
+                                            child: Obx(
+                                              () => controller.isupdating.isTrue
+                                                  ? const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    )
+                                                  : CustomButton(
+                                                      textColor:
+                                                          AppColors.white,
+                                                      backgroundColor:
+                                                          AppColors.orangeColor,
+                                                      label: "Saved",
+                                                      onPressed: () {
+                                                        controller
+                                                            .saveProfile();
+                                                      }),
+                                            ),
+                                          ))
+                                      : Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const NormalText(
+                                              "About",
+                                              color: AppColors.grey,
+                                              fontSize:
+                                                  Constants.defaultFontSize + 5,
                                               isBold: true,
-                                            )
-                                          : Container(),
-                                    ],
-                                  ),
-                          ),
-                          const HeightWidget(h: .02),
-                          const NormalText(
-                            "My Book",
-                            color: AppColors.grey,
-                            fontSize: Constants.defaultFontSize + 5,
-                            isBold: true,
-                          ),
-                          const HeightWidget(h: .01),
-                          Flexible(
-                              child: BookListWidget(
-                                  booklistmodel:
-                                      controller.profileData!.booklist)),
+                                            ),
+                                            const HeightWidget(h: .01),
+                                            controller.profileData!.about
+                                                    .isNotEmpty
+                                                ? NormalText(
+                                                    controller
+                                                        .profileData!.about,
+                                                    isBold: true,
+                                                  )
+                                                : Container(),
+                                          ],
+                                        ),
+                                ),
+                                const HeightWidget(h: .02),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const NormalText(
+                                      "My Book",
+                                      color: AppColors.grey,
+                                      fontSize: Constants.defaultFontSize + 5,
+                                      isBold: true,
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          controller.loadProfile();
+                                        },
+                                        icon: const Icon(Icons.refresh)),
+                                  ],
+                                ),
+                                const HeightWidget(h: .01),
+                                BookListWidget(
+                                    booklistmodel:
+                                        controller.profileData!.booklist),
+                              ],
+                            ),
+                          ))
                         ],
-                      ),
-                    ),
+                      )),
         ),
       ),
-    );
-  }
-}
-
-class HeaderWidget extends StatelessWidget {
-  const HeaderWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final controller = Get.find<ProfileController>();
-    return Stack(
-      children: [
-        Obx(
-          () => !controller.isEditing.value
-              ? const ProfileInfoDisplay()
-              : const InsertProfile(),
-        ),
-        InkWell(
-          onTap: () {
-            Get.back();
-          },
-          child: const Icon(Icons.keyboard_backspace),
-        ),
-        Positioned(
-          top: 0,
-          right: 5,
-          child: InkWell(
-            onTap: () {
-              controller.isEditing.value = true;
-            },
-            child: const NormalText("Edit"),
-          ),
-        )
-      ],
     );
   }
 }
@@ -174,6 +186,7 @@ class ProfileInfoDisplay extends StatelessWidget {
                   radius: Constants.defaultRadius * 3,
                   backgroundImage:
                       NetworkImage(controller.profileData!.profile)),
+          const HeightWidget(h: .02),
           NormalText(
             controller.profileData!.name,
             isBold: true,

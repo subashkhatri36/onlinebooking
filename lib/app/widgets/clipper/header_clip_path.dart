@@ -10,13 +10,13 @@ class HeaderClipper extends CustomClipper<Path> {
 
     path.lineTo(0.0, size.height);
 
-    var firstControlPoint = Offset(size.width / 5, size.height / 2);
-    var firstPoint = Offset(size.width / 2, size.height);
-    path.quadraticBezierTo(
-        controlPoint1.dx, controlPoint2.dy, controlPoint1.dx, controlPoint2.dy);
+    // var firstControlPoint = Offset(size.width / 5, size.height / 2);
+    // var firstPoint = Offset(size.width / 2, size.height);
+    // path.quadraticBezierTo(
+    //     controlPoint1.dx, controlPoint2.dy, controlPoint1.dx, controlPoint2.dy);
 
-    var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
-    var secondPoint = Offset(size.width, size.height - 30);
+    // var secondControlPoint = Offset(size.width - (size.width / 4), size.height);
+    // var secondPoint = Offset(size.width, size.height - 30);
     path.quadraticBezierTo(
         controlPoint2.dx, controlPoint1.dy, controlPoint2.dx, controlPoint1.dy);
 

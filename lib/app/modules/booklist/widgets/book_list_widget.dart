@@ -5,7 +5,6 @@ import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
-import 'package:onlinebooks/app/data/model/booklist_model.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/text/header_widget.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
@@ -15,8 +14,10 @@ class BookListWidget extends StatelessWidget {
   const BookListWidget({
     Key? key,
     this.booklistmodel,
+    this.scroll = false,
   }) : super(key: key);
   final List<BookDetailInfo>? booklistmodel;
+  final bool scroll;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class BookListWidget extends StatelessWidget {
               child: NormalText("No data to show"),
             )
           : ListView.separated(
+              physics: scroll ? null : const NeverScrollableScrollPhysics(),
               separatorBuilder: (context, index) {
                 return const Divider();
               },

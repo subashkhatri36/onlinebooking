@@ -7,6 +7,9 @@ class BookDetail {
   final String author;
   final String synopsis;
   final String pdffile;
+  final bool status;
+  final bool bookmark;
+
   BookDetail({
     required this.authorId,
     required this.title,
@@ -14,6 +17,8 @@ class BookDetail {
     required this.author,
     required this.synopsis,
     required this.pdffile,
+    required this.status,
+    required this.bookmark,
   });
 
   Map<String, dynamic> toMap() {
@@ -26,20 +31,4 @@ class BookDetail {
       'pdffile': pdffile,
     };
   }
-
-  factory BookDetail.fromMap(Map<String, dynamic> map) {
-    return BookDetail(
-      authorId: map['authorId'],
-      title: map['title'],
-      coverPhoto: map['coverPhoto'],
-      author: map['author'],
-      synopsis: map['synopsis'],
-      pdffile: map['pdffile'],
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory BookDetail.fromJson(String source) =>
-      BookDetail.fromMap(json.decode(source));
 }

@@ -5,7 +5,6 @@ import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
-import 'package:onlinebooks/app/data/model/author_model.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
@@ -195,23 +194,34 @@ class AuthorWidget extends StatelessWidget {
                 ? const Center(
                     child: NormalText("No Author Found"),
                   )
-                : Column(
-                    children: [
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(30),
-                        child: controller.author!.profilePic.isNotEmpty
-                            ? Image.network(controller.author!.profilePic,
-                                height: 100, width: 100, fit: BoxFit.fill)
-                            : Image.asset(AppImage.appLogo,
-                                height: 100, width: 100, fit: BoxFit.fill),
-                      ),
-                      NormalText(
-                        controller.author!.name,
-                        isBold: true,
-                      ),
-                      const HeightWidget(h: .01),
-                      NormalText(controller.author!.about),
-                    ],
+                : SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const HeightWidget(h: .02),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: controller.author!.profilePic.isNotEmpty
+                              ? Image.network(controller.author!.profilePic,
+                                  height: 100, width: 100, fit: BoxFit.fill)
+                              : Image.asset(AppImage.appLogo,
+                                  height: 100, width: 100, fit: BoxFit.fill),
+                        ),
+                        NormalText(
+                          controller.author!.name,
+                          isBold: true,
+                        ),
+                        const HeightWidget(h: .01),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: NormalText(
+                            controller.author!.about,
+                            isCentered: true,
+                          ),
+                        ),
+                      ],
+                    ),
                   )));
   }
 }

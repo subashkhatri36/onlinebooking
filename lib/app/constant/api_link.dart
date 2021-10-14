@@ -20,48 +20,11 @@ class Api {
   static const String bookList =
       "http://www.programmingly.com/book/Book/BookList";
 
-  ///update profile
-  ///in headerr token : <token value> post
-  ///"1)name
-  ///2)about
-  ///3)profile_pic
-  ///Note : profile_pic should be multipart"
   static const String updateProfile =
       "http://www.programmingly.com/book/Profile/UpdateProfile";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Profile Data"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""name"": ""vineeth"",
-        ""about"": ""Test about"",
-        ""profile_pic"": ""http://programmingly.com/book/web/upload/profile/profile_3_1630260275.jpeg"",
-        ""bookList"": []
-    }
-}"
- */
-  ///uploading books:
-  ///in headerr token : <token value> post
-/*
-"1)title
-2)category_id
-3)synopsis
-4)cover_image
-5)pdf_file
 
-Note : cover_image and pdf_file should be multipart"
- */
   static const String uploadbook =
       "http://www.programmingly.com/book/Book/UploadBook";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Successfully uploaded the book"",
-    ""show_alert"": ""false""
-}"*/
 
   static const String bookDetails =
       "http://www.programmingly.com/book/Book/BookDetails";
@@ -98,6 +61,9 @@ Note : cover_image and pdf_file should be multipart"
 
   static const forgetPassword =
       "http://www.programmingly.com/book/Login/resetPassword";
+
+  //bookmarks
+  static const bookmark = "http://www.programmingly.com/book/Book/Bookmark";
 
 //home
   ///token
