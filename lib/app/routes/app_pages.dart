@@ -38,6 +38,7 @@ class AppPages {
   static const bookread = Routes.bookread;
   static const savedbook = Routes.savedbook;
   static const transaction = Routes.transaction;
+  static const search = Routes.search;
 
   static final routes = [
     GetPage(
@@ -107,7 +108,7 @@ class AppPages {
       binding: TransactionBinding(),
     ),
     GetPage(
-      name: _Paths.SEARCH,
+      name: _Paths.search,
       page: () => SearchView(),
       binding: SearchBinding(),
     ),

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/constant/string.dart';
 import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
@@ -21,6 +22,10 @@ class AuthenticationController extends GetxController {
   final TextEditingController regpassword = TextEditingController();
   final TextEditingController regconpassword = TextEditingController();
   final GlobalKey<FormState> registrationformkey = GlobalKey<FormState>();
+
+//for register page
+  final TextEditingController forgetemail = TextEditingController();
+
   RxBool islogining = false.obs;
 
   void login() async {
@@ -79,27 +84,33 @@ class AuthenticationController extends GetxController {
     }
   }
 
-  /*
-   HttpService _httpService = HttpServiceImpl();
-  
-  //turnOvers
-  getGetTopTurnOvers() async {
-    List<GetTopTurnovers> data = [];
-    final response = await _httpService.post(ApiUrl.topTurnovers,
-        data: ApiUrl.gettoptrunoverheader);
+  RxBool forgetpassword = false.obs;
+  RxBool forget = false.obs;
+  void forgetPassword() async {
+    forget.toggle();
 
-    final apiData = response.data['d'];
-    if (apiData != null)
-      apiData.forEach((e) {
-        data.add(GetTopTurnovers.fromJson(e));
-      });
-
-    return data;
+    if (forgetemail.text.isNotEmpty) {
+      //do what we want to do
+      //call api
+      ApiCall response = await userlogin.forgetPassword(forgetemail.text);
+      if (response.status) {
+        forgetpassword.value = true;
+      } else {
+        customSnackbar(
+            message: response.message,
+            snackPosition: SnackPosition.TOP,
+            leadingIcon: Icons.warning,
+            backgroundColor: AppColors.red);
+      }
+    } else {
+      //custome snackbar
+      customSnackbar(
+          message: 'Email is not valid !',
+          snackPosition: SnackPosition.TOP,
+          leadingIcon: Icons.warning);
+    }
+    forget.toggle();
   }
-
-  
-  
-   */
 
   @override
   void onClose() {

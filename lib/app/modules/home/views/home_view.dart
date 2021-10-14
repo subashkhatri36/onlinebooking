@@ -85,183 +85,52 @@ class HomeView extends GetView<HomeController> {
                           isBold: true,
                           fontSize: Constants.defaultFontSize + 5),
                     ),
-                    const Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.search)),
+                    Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: InkWell(
+                            onTap: () {
+                              Get.toNamed(Routes.search);
+                            },
+                            child: const Icon(Icons.search))),
                     Stack(
                       children: [
                         InkWell(
                           onTap: () async {
-                            return showDialog(
-                                barrierDismissible: false,
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    content: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(40)),
-                                      height: appController.height * .56,
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: appController.width * .7,
-                                            child: Stack(
-                                              children: [
-                                                Center(
-                                                  child:
-                                                      controller.profileData ==
-                                                              null
-                                                          ? const CircleAvatar(
-                                                              radius: 60,
-                                                              backgroundImage:
-                                                                  AssetImage(
-                                                                      AppImage
-                                                                          .appLogo),
-                                                            )
-                                                          : CircleAvatar(
-                                                              radius: 60,
-                                                              backgroundImage:
-                                                                  NetworkImage(
-                                                                      controller
-                                                                          .profileData!
-                                                                          .profile),
-                                                            ),
-                                                ),
-                                                Positioned(
-                                                    right: 0,
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        Navigator.of(context)
-                                                            .pop(true);
-                                                      },
-                                                      child: const CircleAvatar(
-                                                        radius: 15,
-                                                        backgroundColor:
-                                                            AppColors.black,
-                                                        child: Icon(
-                                                          Icons.close,
-                                                          color:
-                                                              AppColors.white,
-                                                        ),
-                                                      ),
-                                                    ))
-                                              ],
-                                            ),
-                                          ),
-                                          NormalText(
-                                            controller.profileData == null
-                                                ? "username"
-                                                : controller.profileData!.name,
-                                            isBold: true,
-                                            isCentered: true,
-                                          ),
-                                          const HeightWidget(h: .02),
-                                          const NormalText(
-                                            "\$ 36.50",
-                                            isBold: true,
-                                            isCentered: true,
-                                            fontSize:
-                                                Constants.defaultFontSize + 5,
-                                          ),
-                                          const NormalText(
-                                            "your earning",
-                                            color: AppColors.grey,
-                                            isBold: true,
-                                            isCentered: true,
-                                          ),
-                                          const HeightWidget(h: .02),
-                                          CustomButton(
-                                            label: "Withdraw",
-                                            onPressed: () {},
-                                            textColor: AppColors.white,
-                                            backgroundColor: AppColors.blue,
-                                          ),
-                                          const HeightWidget(h: .02),
-                                          SizedBox(
-                                            width: appController.width * .6,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
-                                                      Get.toNamed(
-                                                          Routes.profile);
-                                                    },
-                                                    child: const NormalText(
-                                                      "My Profile",
-                                                      isBold: true,
-                                                    )),
-                                                const Divider(),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
-                                                      Get.toNamed(
-                                                          Routes.savedbook);
-                                                    },
-                                                    child: const NormalText(
-                                                        "My Saved Book",
-                                                        isBold: true)),
-                                                const Divider(),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
-                                                      Get.toNamed(
-                                                          Routes.transaction);
-                                                    },
-                                                    child: const NormalText(
-                                                        "My Transaction",
-                                                        isBold: true)),
-                                                const Divider(),
-                                                InkWell(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop(true);
-                                                      controller.logout();
-                                                      // Get.toNamed(
-                                                      //     Routes.transaction);
-                                                    },
-                                                    child: const NormalText(
-                                                        "Logout",
-                                                        isBold: true)),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
+                            return userdialog(context);
                             //Get.toNamed(Routes.profile);
                           },
                           child: CircleAvatar(
                             radius: 20,
                             backgroundColor: AppColors.black.withOpacity(.10),
-                            child: const CircleAvatar(
-                              radius: 16,
-                              backgroundImage: AssetImage(
-                                AppImage.appLogo,
-                              ),
-                            ),
+                            child: controller.profileData == null
+                                ? const CircleAvatar(
+                                    radius: 16,
+                                    backgroundImage:
+                                        AssetImage(AppImage.appLogo),
+                                  )
+                                : controller.profileData!.profile.isEmpty
+                                    ? const CircleAvatar(
+                                        radius: 16,
+                                        backgroundImage:
+                                            AssetImage(AppImage.appLogo),
+                                      )
+                                    : CircleAvatar(
+                                        radius: 16,
+                                        backgroundImage: NetworkImage(
+                                            controller.profileData!.profile),
+                                      ),
                           ),
                         ),
-                        Positioned(
-                            top: 0,
-                            right: 0,
-                            child: CircleAvatar(
-                              radius: 8,
-                              backgroundColor: AppColors.orangeColor,
-                              child: const NormalText('1',
-                                  color: AppColors.white,
-                                  fontSize: Constants.defaultFontSize - 5),
-                            ))
+                        // Positioned(
+                        //     top: 0,
+                        //     right: 0,
+                        //     child: CircleAvatar(
+                        //       radius: 8,
+                        //       backgroundColor: AppColors.orangeColor,
+                        //       child: const NormalText('1',
+                        //           color: AppColors.white,
+                        //           fontSize: Constants.defaultFontSize - 5),
+                        //     ))
                       ],
                     )
                   ],
@@ -369,6 +238,130 @@ class HomeView extends GetView<HomeController> {
         ),
       ),
     ));
+  }
+
+  Future<void> userdialog(BuildContext context) {
+    return showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(40)),
+              height: appController.height * .56,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: appController.width * .7,
+                    child: Stack(
+                      children: [
+                        Center(
+                          child: controller.profileData == null
+                              ? const CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: AssetImage(AppImage.appLogo),
+                                )
+                              : CircleAvatar(
+                                  radius: 60,
+                                  backgroundImage: NetworkImage(
+                                      controller.profileData!.profile),
+                                ),
+                        ),
+                        Positioned(
+                            right: 0,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              child: const CircleAvatar(
+                                radius: 15,
+                                backgroundColor: AppColors.black,
+                                child: Icon(
+                                  Icons.close,
+                                  color: AppColors.white,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+                  ),
+                  NormalText(
+                    controller.profileData == null
+                        ? "username"
+                        : controller.profileData!.name,
+                    isBold: true,
+                    isCentered: true,
+                  ),
+                  const HeightWidget(h: .02),
+                  const NormalText(
+                    "\$ 36.50",
+                    isBold: true,
+                    isCentered: true,
+                    fontSize: Constants.defaultFontSize + 5,
+                  ),
+                  const NormalText(
+                    "your earning",
+                    color: AppColors.grey,
+                    isBold: true,
+                    isCentered: true,
+                  ),
+                  const HeightWidget(h: .02),
+                  CustomButton(
+                    label: "Withdraw",
+                    onPressed: () {},
+                    textColor: AppColors.white,
+                    backgroundColor: AppColors.blue,
+                  ),
+                  const HeightWidget(h: .02),
+                  SizedBox(
+                    width: appController.width * .6,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop(true);
+                              Get.toNamed(Routes.profile);
+                            },
+                            child: const NormalText(
+                              "My Profile",
+                              isBold: true,
+                            )),
+                        const Divider(),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop(true);
+                              Get.toNamed(Routes.savedbook);
+                            },
+                            child: const NormalText("My Saved Book",
+                                isBold: true)),
+                        const Divider(),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop(true);
+                              Get.toNamed(Routes.transaction);
+                            },
+                            child: const NormalText("My Transaction",
+                                isBold: true)),
+                        const Divider(),
+                        InkWell(
+                            onTap: () {
+                              Navigator.of(context).pop(true);
+                              controller.logout();
+                              // Get.toNamed(
+                              //     Routes.transaction);
+                            },
+                            child: const NormalText("Logout", isBold: true)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
 

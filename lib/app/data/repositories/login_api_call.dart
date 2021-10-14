@@ -94,9 +94,31 @@ class LoginAPI {
     final data = {
       'email': email,
     };
-    try {} catch (e) {
-      // userapi.iserror = true;
-      // userapi.error = e.toString();
+    final response = await http.post(
+      Uri.parse(Api.forgetPassword),
+      body: data,
+      headers: {},
+    );
+    try {
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body); //["message"].toString();
+        print(jsonResponse);
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          userapi.status = true;
+        } else {
+          userapi.status = false;
+          userapi.message = jsonResponse["message"].toString();
+        }
+
+        // return ApiCall.fromMap(jsonResponse);
+      } else {
+        userapi.status = false;
+        userapi.message = "Bad Connection Error.";
+      }
+    } catch (e) {
+      userapi.status = false;
+      userapi.message = e.toString();
     }
     return userapi;
   }

@@ -20,71 +20,97 @@ class ForgetPasswordView extends StatelessWidget {
     final controller = Get.find<AuthenticationController>();
     return Scaffold(
       appBar: AppBar(
-        title: const NormalText('Forget Password'),
+        title: const NormalText(
+          'Forget Password',
+          color: AppColors.white,
+        ),
       ),
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Form(
-            // key: controller.formkey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  AppImage.forgetPassword,
-                  height: 200,
-                  width: 200,
-                ),
-                const HeightWidget(
-                  h: .01,
-                ),
-                const Text(
-                  "Forget Password",
-                  style: TextStyle(
-                    fontSize: 22.0,
-                  ),
-                ),
-                const HeightWidget(
-                  h: .01,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
+          child: Obx(
+            () => controller.forgetpassword.isFalse
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const SizedBox(
-                        height: 10.0,
-                      ),
-                      InputField(
-                        controller: controller.username,
-                        hintText: 'Enter Email',
-                        icon: Icons.email,
-                        validator: (value) => validateEmail(string: value),
+                      Image.asset(
+                        AppImage.forgetPassword,
+                        height: 200,
+                        width: 200,
                       ),
                       const HeightWidget(
                         h: .01,
                       ),
-                      SizedBox(
-                        width: appController.width,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: Constants.defaultPadding),
-                          child: CustomButton(
-                            onPressed: () {
-                              //controller.login();
-                              // Get.to(DashboardView());
-                              Get.back();
-                            },
-                            label: 'Send Code',
-                            backgroundColor: AppColors.orangeColor,
-                            textColor: AppColors.white,
-                          ),
+                      const Text(
+                        "Forget Password",
+                        style: TextStyle(
+                          fontSize: 22.0,
+                        ),
+                      ),
+                      const HeightWidget(
+                        h: .01,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(18.0),
+                        child: Column(
+                          children: <Widget>[
+                            const SizedBox(
+                              height: 10.0,
+                            ),
+                            InputField(
+                              controller: controller.forgetemail,
+                              hintText: 'Enter Email',
+                              icon: Icons.email,
+                              validator: (value) =>
+                                  validateEmail(string: value),
+                            ),
+                            const HeightWidget(
+                              h: .01,
+                            ),
+                            SizedBox(
+                              width: appController.width,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: Constants.defaultPadding),
+                                child: CustomButton(
+                                  onPressed: () {
+                                    controller.forgetPassword();
+                                    // //controller.login();
+                                    // // Get.to(DashboardView());
+                                    // Get.back();
+                                  },
+                                  label: 'Send Code',
+                                  backgroundColor: AppColors.orangeColor,
+                                  textColor: AppColors.white,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Icon(
+                        Icons.email,
+                        size: 140,
+                        color: Colors.green,
+                      ),
+                      HeightWidget(
+                        h: .01,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Text(
+                            "Email Send Please Check your email account and reset your password.\Thank you.",
+                            style:
+                                TextStyle(fontSize: 22.0, color: Colors.green),
+                            textAlign: TextAlign.center),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),

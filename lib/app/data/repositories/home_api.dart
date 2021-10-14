@@ -46,11 +46,13 @@ class HomeAPI {
                 coverPhoto: book["cover_photo"].toString(),
                 synopsis: book["synopsis"].toString()));
           }
-          for (var category in jsonResponse["data"]["categoryList"]) {
-            categorylist.add(CategoryList(
-                id: int.parse(category["id"].toString()),
-                name: category["name"].toString(),
-                image: category["image"].toString()));
+          if (searchkeyword.isNotEmpty) {
+            for (var category in jsonResponse["data"]["categoryList"]) {
+              categorylist.add(CategoryList(
+                  id: int.parse(category["id"].toString()),
+                  name: category["name"].toString(),
+                  image: category["image"].toString()));
+            }
           }
 
           userapi.response = [
