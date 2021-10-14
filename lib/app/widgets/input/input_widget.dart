@@ -87,8 +87,8 @@ class _InputFieldState extends State<InputField> {
         decoration: InputDecoration(
           fillColor: widget.color,
           contentPadding: widget.icon != null
-              ? const EdgeInsets.fromLTRB(20, 0, 20, 0)
-              : const EdgeInsets.fromLTRB(10, 0, 10, 0),
+              ? const EdgeInsets.fromLTRB(20, 5, 20, 0)
+              : const EdgeInsets.fromLTRB(10, 5, 10, 0),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(widget.borderRadius),
             borderSide: const BorderSide(color: Themes.grey),

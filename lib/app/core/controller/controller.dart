@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/string.dart';
 import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
+import 'package:onlinebooks/app/data/model/category_list.dart';
 import 'package:onlinebooks/app/data/model/user.dart';
 
 class AppController extends GetxController {
@@ -13,6 +14,9 @@ class AppController extends GetxController {
   bool authorized = false;
   RxBool islandscape = false.obs;
   RxBool userInfoData = false.obs;
+  List<CategoryList> categoryList = [];
+  String apikey =
+      "pk_test_51Jjn63HYuecEF2jZkAUN1qdIQ6jqgE1zoAtEdk7OvmDoR2ymclXSqLJUpfSnINnjksw2jZCH8XZRPJeq7j8q3rYk00Y48MJrzB";
 
   User? user;
   //Core list
@@ -23,7 +27,8 @@ class AppController extends GetxController {
   }
 
   Future loadDatabase() async {
-    accesstoken = "";//await shareprefrence.read(Strings.logintoken);
+    accesstoken = "";
+    // await shareprefrence.read(Strings.logintoken);
 
     if (accesstoken.isNotEmpty) {
       authorized = true;

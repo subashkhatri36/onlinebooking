@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/constant/string.dart';
+import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/home_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/home_api.dart';
+import 'package:onlinebooks/app/data/repositories/login_api_call.dart';
+import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 
 class HomeController extends GetxController {
@@ -20,14 +24,25 @@ class HomeController extends GetxController {
     gettingHomeData();
   }
 
+  logout() async {
+    bool val = await userlogin.logout(appController.accesstoken);
+    print(val);
+    if (val) {
+      //logout
+      await shareprefrence.remove(Strings.logintoken);
+      await shareprefrence.remove(Strings.userInfo);
+      Get.offAllNamed(Routes.login);
+    }
+  }
+
   //getting home data from api
-  void gettingHomeData() async {
+  gettingHomeData() async {
     isloadingdata.toggle();
 
     ApiCall apiCall = await homeApi.home();
     if (apiCall.status) {
       List<Home> listHome = [];
-
+      appController.categoryList = apiCall.response[1];
       listHome.add(Home(
           bookdetail: apiCall.response[0],
           categorylist: apiCall.response[1],

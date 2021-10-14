@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/data/model/category_list.dart';
+import 'package:onlinebooks/app/modules/home/widgets/category_items.dart';
 import 'package:onlinebooks/app/utls/validation.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
@@ -49,6 +51,49 @@ class UploadbooksView extends GetView<UploadbooksController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    SizedBox(
+                      height: appController.height * .05,
+                      width: appController.width,
+                      child: appController.categoryList.isEmpty
+                          ? Container()
+                          : ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: appController.categoryList.length,
+                              itemBuilder: (context, index) {
+                                CategoryList e =
+                                    appController.categoryList[index];
+                                if (index == 0) {
+                                  controller.categoryId = e.id.toString();
+                                }
+                                return Obx(
+                                  () => controller.changeIndex.value == index
+                                      ? InkWell(
+                                          onTap: () {
+                                            controller.changeIndex.value =
+                                                index;
+                                            controller.categoryId =
+                                                e.id.toString();
+                                          },
+                                          child: CategoryItemList(
+                                            e: e,
+                                            bgcolor: AppColors.grey,
+                                          ),
+                                        )
+                                      : InkWell(
+                                          onTap: () {
+                                            controller.changeIndex.value =
+                                                index;
+                                            controller.categoryId =
+                                                e.id.toString();
+                                          },
+                                          child: CategoryItemList(
+                                            e: e,
+                                          ),
+                                        ),
+                                );
+                              }),
+                    ),
+                    const HeightWidget(h: .02),
                     const Padding(
                         padding: EdgeInsets.all(Constants.defaultPadding / 2),
                         child: NormalText(

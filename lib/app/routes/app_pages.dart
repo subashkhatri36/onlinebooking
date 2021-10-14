@@ -8,12 +8,18 @@ import 'package:onlinebooks/app/modules/bookdecription/bindings/bookdecription_b
 import 'package:onlinebooks/app/modules/bookdecription/views/bookdecription_view.dart';
 import 'package:onlinebooks/app/modules/booklist/bindings/booklist_binding.dart';
 import 'package:onlinebooks/app/modules/booklist/views/booklist_view.dart';
+import 'package:onlinebooks/app/modules/bookread/bindings/bookread_binding.dart';
+import 'package:onlinebooks/app/modules/bookread/views/bookread_view.dart';
 import 'package:onlinebooks/app/modules/home/bindings/home_binding.dart';
 import 'package:onlinebooks/app/modules/home/views/home_view.dart';
 import 'package:onlinebooks/app/modules/profile/bindings/profile_binding.dart';
 import 'package:onlinebooks/app/modules/profile/views/profile_view.dart';
+import 'package:onlinebooks/app/modules/savedbook/bindings/savedbook_binding.dart';
+import 'package:onlinebooks/app/modules/savedbook/views/savedbook_view.dart';
 import 'package:onlinebooks/app/modules/splash/bindings/splash_binding.dart';
 import 'package:onlinebooks/app/modules/splash/views/splash_view.dart';
+import 'package:onlinebooks/app/modules/transaction/bindings/transaction_binding.dart';
+import 'package:onlinebooks/app/modules/transaction/views/transaction_view.dart';
 import 'package:onlinebooks/app/modules/uploadbooks/bindings/uploadbooks_binding.dart';
 import 'package:onlinebooks/app/modules/uploadbooks/views/uploadbooks_view.dart';
 
@@ -27,6 +33,9 @@ class AppPages {
   static const register = Routes.register;
   static const forgetpassword = Routes.forgetpassword;
   static const uploadbooks = Routes.uploadbooks;
+  static const bookread = Routes.bookread;
+  static const savedbook = Routes.savedbook;
+  static const transaction = Routes.transaction;
 
   static final routes = [
     GetPage(
@@ -57,7 +66,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.profile,
-      page: () => ProfileView(),
+      page: () => const ProfileView(),
       binding: ProfileBinding(),
     ),
     GetPage(
@@ -79,6 +88,21 @@ class AppPages {
       name: _Paths.booklist,
       page: () => BooklistView(),
       binding: BooklistBinding(),
+    ),
+    GetPage(
+      name: _Paths.bookread,
+      page: () => BookreadView(),
+      binding: BookreadBinding(),
+    ),
+    GetPage(
+      name: _Paths.savedbook,
+      page: () => const SavedbookView(),
+      binding: SavedbookBinding(),
+    ),
+    GetPage(
+      name: _Paths.transaction,
+      page: () => const TransactionView(),
+      binding: TransactionBinding(),
     ),
   ];
 }

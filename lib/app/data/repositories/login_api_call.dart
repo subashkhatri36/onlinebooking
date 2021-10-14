@@ -10,23 +10,30 @@ LoginAPI userlogin = LoginAPI();
 ///it call all user related work
 class LoginAPI {
   Future<bool> logout(String token) async {
-    final data = {'token': token};
+    final headers = {'token': token};
+    bool value = false;
     try {
-      final response = ""; //await httpService.post("", data: data);
-      //"message": "Successfully logged out"
-      // if (response != null) {
-      //   if (response.data['message'] == "Successfully logged out") {
-      //     return true;
-      //   } else {
-      //     return false;
-      //   }
-      // } else {
-      //   return false;
-      // }
+      final response = await http.post(
+        Uri.parse(Api.logout),
+        body: {},
+        headers: headers,
+      );
+      if (response.statusCode == 200) {
+        var jsonResponse = json.decode(response.body); //["message"].toString();
+
+        String val = jsonResponse["status"].toString();
+        if (val.toLowerCase() == 'true') {
+          value = true;
+        } else {
+          value = false;
+        }
+      } else {
+        value = false;
+      }
     } catch (e) {
-      return false;
+      value = false;
     }
-    return false;
+    return value;
   }
 
   Future<ApiCall> login(String email, String password) async {
@@ -55,7 +62,6 @@ class LoginAPI {
           String lastloginIp = jsonResponse["data"]["last_login_ip"].toString();
           String token = jsonResponse["data"]["token"].toString();
           appController.accesstoken = token;
-          print("token" + token);
           appController.user = User(
               id: int.parse(id),
               name: name,

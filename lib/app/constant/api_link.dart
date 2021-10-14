@@ -16,20 +16,9 @@ class Api {
   ///profile data
   ///in headerr token : <token value> post
   static const String profileData = "http://www.programmingly.com/book/Profile";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Profile Data"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""name"": ""Vineeth v"",
-        ""about"": ""Test about us test about us"",
-        ""profile_pic"": ""http://programmingly.com/book/web/upload/profile/profile_3_1630238086.jpeg"",
-        ""bookList"": []
-    }
-}"
- */
+
+  static const String bookList =
+      "http://www.programmingly.com/book/Book/BookList";
 
   ///update profile
   ///in headerr token : <token value> post
@@ -103,33 +92,12 @@ Note : cover_image and pdf_file should be multipart"
   ///
   static const String aboutAuthor =
       "http://www.programmingly.com/book/Book/Aboutauthor";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": ""S01"",
-    ""message"": ""Author Data"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""name"": ""vineeth"",
-        ""about"": ""Test about"",
-        ""profile_pic"": ""http://programmingly.com/book/web/upload/profile/profile_3_1630260275.jpeg""
-    }
-}"
- */
 
 //forget password
 //email
 
   static const forgetPassword =
       "http://www.programmingly.com/book/Login/resetPassword";
-/*
-"{
-    ""status"": ""true"",
-    ""error_code"": """",
-    ""message"": ""Password sent to Mail"",
-    ""show_alert"": ""true""
-}"
- */
 
 //home
   ///token
@@ -137,70 +105,5 @@ Note : cover_image and pdf_file should be multipart"
 //Note : search_keyword is optional
   static const String home = "http://www.programmingly.com/book/Home/GetHome";
 
-  ///---------------------------------------------
-/*
-
-"if search keyword is empty
-{
-    ""status"": ""true"",
-    ""error_code"": """",
-    ""message"": ""Trending Books and Category List"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""bookDetail"": [
-            {
-                ""id"": ""1"",
-                ""title"": ""Test title1"",
-                ""author"": ""vineeth"",
-                ""cover_photo"": """",
-                ""synopsis"": ""Test synopsis""
-            },
-            {
-                ""id"": ""2"",
-                ""title"": ""Test title"",
-                ""author"": ""vineeth"",
-                ""cover_photo"": ""http://programmingly.com/book/web/uploads/cover/cover_Test title3_1630260523.jpeg"",
-                ""synopsis"": ""Test synopsis""
-            }
-        ],
-        ""categoryList"": [
-            {
-                ""id"": ""1"",
-                ""name"": ""Drama"",
-                ""image"": ""http://programmingly.com/book/bo/web/uploads/category/drama.png""
-            }
-        ],
-        ""search"": ""false""
-    }
-}
-
-if search keyword id not empty
-
-{
-    ""status"": ""true"",
-    ""error_code"": """",
-    ""message"": ""Trending Books and Category List"",
-    ""show_alert"": ""false"",
-    ""data"": {
-        ""bookDetail"": [
-            {
-                ""id"": ""1"",
-                ""title"": ""Test title1"",
-                ""author"": ""vineeth"",
-                ""cover_photo"": """",
-                ""synopsis"": ""Test synopsis""
-            }
-        ],
-        ""categoryList"": [
-            {
-                ""id"": ""1"",
-                ""name"": ""Drama"",
-                ""image"": ""http://programmingly.com/book/bo/web/uploads/category/drama.png""
-            }
-        ],
-        ""search"": ""true""
-    }
-}"
-
- */
+  static const String logout = "http://www.programmingly.com/book/Home/Logout";
 }

@@ -7,7 +7,7 @@ import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
 import 'package:onlinebooks/app/data/model/category_list.dart';
-import 'package:onlinebooks/app/data/repositories/home_api.dart';
+import 'package:onlinebooks/app/modules/home/widgets/category_items.dart';
 import 'package:onlinebooks/app/modules/home/widgets/drawer.dart';
 import 'package:onlinebooks/app/modules/home/widgets/tranding_list_item_widget.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
@@ -25,7 +25,7 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.gettingHomeData();
+    // controller.gettingHomeData();
     return authorizedAccess(WillPopScope(
       onWillPop: () async {
         final data = await showDialog(
@@ -92,7 +92,140 @@ class HomeView extends GetView<HomeController> {
                     Stack(
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            return showDialog(
+                                barrierDismissible: false,
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(40)),
+                                      height: appController.height * .56,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: appController.width * .7,
+                                            child: Stack(
+                                              children: [
+                                                const Center(
+                                                  child: CircleAvatar(
+                                                    radius: 60,
+                                                    backgroundImage: AssetImage(
+                                                        AppImage.appLogo),
+                                                  ),
+                                                ),
+                                                Positioned(
+                                                    right: 0,
+                                                    child: InkWell(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pop(true);
+                                                      },
+                                                      child: const CircleAvatar(
+                                                        backgroundColor:
+                                                            AppColors.black,
+                                                        child: Icon(
+                                                          Icons.close,
+                                                          color:
+                                                              AppColors.white,
+                                                        ),
+                                                      ),
+                                                    ))
+                                              ],
+                                            ),
+                                          ),
+                                          const NormalText(
+                                            "username",
+                                            isBold: true,
+                                            isCentered: true,
+                                          ),
+                                          const HeightWidget(h: .02),
+                                          const NormalText(
+                                            "\$ 36.50",
+                                            isBold: true,
+                                            isCentered: true,
+                                            fontSize:
+                                                Constants.defaultFontSize + 5,
+                                          ),
+                                          const NormalText(
+                                            "your earning",
+                                            color: AppColors.grey,
+                                            isBold: true,
+                                            isCentered: true,
+                                          ),
+                                          const HeightWidget(h: .02),
+                                          CustomButton(
+                                            label: "Withdraw",
+                                            onPressed: () {},
+                                            textColor: AppColors.white,
+                                            backgroundColor: AppColors.blue,
+                                          ),
+                                          const HeightWidget(h: .02),
+                                          SizedBox(
+                                            width: appController.width * .6,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                      Get.toNamed(
+                                                          Routes.profile);
+                                                    },
+                                                    child: const NormalText(
+                                                      "My Profile",
+                                                      isBold: true,
+                                                    )),
+                                                const Divider(),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                      Get.toNamed(
+                                                          Routes.savedbook);
+                                                    },
+                                                    child: const NormalText(
+                                                        "My Saved Book",
+                                                        isBold: true)),
+                                                const Divider(),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                      Get.toNamed(
+                                                          Routes.transaction);
+                                                    },
+                                                    child: const NormalText(
+                                                        "My Transaction",
+                                                        isBold: true)),
+                                                const Divider(),
+                                                InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop(true);
+                                                      controller.logout();
+                                                      // Get.toNamed(
+                                                      //     Routes.transaction);
+                                                    },
+                                                    child: const NormalText(
+                                                        "Logout",
+                                                        isBold: true)),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
+                            //Get.toNamed(Routes.profile);
+                          },
                           child: CircleAvatar(
                             radius: 20,
                             backgroundColor: AppColors.black.withOpacity(.10),
@@ -141,30 +274,36 @@ class HomeView extends GetView<HomeController> {
                                       ? const Center(
                                           child: NormalText("No Books"),
                                         )
-                                      : ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: controller
-                                              .homeList[0].bookdetail.length,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            BookDetailInfo b = controller
-                                                .homeList[0].bookdetail[index];
+                                      : RefreshIndicator(
+                                          onRefresh: () async {
+                                            await controller.gettingHomeData();
+                                          },
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: controller.homeList[0]
+                                                  .bookdetail.length,
+                                              scrollDirection: Axis.horizontal,
+                                              itemBuilder: (context, index) {
+                                                BookDetailInfo b = controller
+                                                    .homeList[0]
+                                                    .bookdetail[index];
 
-                                            return InkWell(
-                                              onTap: () {
-                                                Get.toNamed(
-                                                    Routes.bookdescription,
-                                                    arguments: b.id);
-                                              },
-                                              child: TrandingListItems(
-                                                bookImage: b.coverPhoto,
-                                                bookname: b.title,
-                                                authorname: b.author,
-                                                backgroundColor:
-                                                    AppColors.list1color,
-                                              ),
-                                            );
-                                          }),
+                                                return InkWell(
+                                                  onTap: () {
+                                                    Get.toNamed(
+                                                        Routes.bookdescription,
+                                                        arguments: b.id);
+                                                  },
+                                                  child: TrandingListItems(
+                                                    bookImage: b.coverPhoto,
+                                                    bookname: b.title,
+                                                    authorname: b.author,
+                                                    backgroundColor:
+                                                        AppColors.list1color,
+                                                  ),
+                                                );
+                                              }),
+                                        ),
                             )),
                         const HeightWidget(h: .02),
                         const HeaderTitle(
@@ -187,14 +326,16 @@ class HomeView extends GetView<HomeController> {
                                           childAspectRatio: 4 / 1,
                                           crossAxisSpacing: 3,
                                           mainAxisSpacing: 6,
-                                          //physics:NeverScroll(),
-                                          // padding: EdgeInsets.all(10.0),
                                           children: controller
                                               .homeList[0].categorylist
                                               .map((e) => InkWell(
                                                     onTap: () {
                                                       Get.toNamed(
-                                                          Routes.booklist);
+                                                          Routes.booklist,
+                                                          arguments: [
+                                                            e.name,
+                                                            e.id.toString()
+                                                          ]);
                                                     },
                                                     child: CategoryItemList(
                                                       e: e,
@@ -216,47 +357,6 @@ class HomeView extends GetView<HomeController> {
   }
 }
 
-class CategoryItemList extends StatelessWidget {
-  const CategoryItemList({Key? key, required this.e}) : super(key: key);
-  final CategoryList e;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          margin: const EdgeInsets.symmetric(
-              horizontal: Constants.defaultMargin / 2),
-          padding: const EdgeInsets.symmetric(
-              horizontal: Constants.defaultPadding,
-              vertical: Constants.defaultPadding / 4),
-          decoration: BoxDecoration(
-              color: AppColors.categoryColor,
-              borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              Image.network(
-                e.image,
-                fit: BoxFit.fitHeight,
-                height: Constants.defaultMargin * 1.5,
-              ),
-              const SizedBox(
-                width: 5,
-              ),
-              NormalText(
-                e.name,
-                isBold: true,
-                isCentered: true,
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class HeaderTitle extends StatelessWidget {
   const HeaderTitle({
     Key? key,
@@ -270,7 +370,7 @@ class HeaderTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
         width: appController.width,
         height: appController.height * .05,
         child: Stack(

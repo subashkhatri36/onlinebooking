@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/book_upload.dart';
+import 'package:onlinebooks/app/modules/home/controllers/home_controller.dart';
 import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 import 'package:path/path.dart';
 
@@ -16,19 +18,18 @@ class UploadbooksController extends GetxController {
   RxBool selectCover = false.obs;
   RxBool selectfile = false.obs;
   RxBool uploadingBooks = false.obs;
+
+  RxInt changeIndex = 0.obs;
+  RxBool changeItems = false.obs;
+
   String filename = "";
-  String categoryId = "1";
+  String categoryId = "";
 
   String coverImage = '';
   File? coverFile;
 
   String pdf = '';
   File? pdfFile;
-
-  @override
-  void onInit() {
-    super.onInit();
-  }
 
   removeCover() {
     selectCover.value = false;
@@ -46,9 +47,7 @@ class UploadbooksController extends GetxController {
   pickCoverPhoto() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: [
-        'jpg',
-      ],
+      allowedExtensions: ['jpg', 'png'],
     );
 
     if (result != null) {
@@ -85,29 +84,44 @@ class UploadbooksController extends GetxController {
     uploadingBooks.toggle();
 
     if (formkey.currentState!.validate()) {
-      ApiCall api = await bookUploadAPI.uploadbooks(
-          bookname: bookname.text,
-          categoryId: categoryId,
-          synopsis: synposis.text,
-          bookcover: coverFile!,
-          bookfile: pdfFile!);
+      if (categoryId.isNotEmpty) {
+        if (coverImage.isEmpty || pdf.isEmpty) {
+          customSnackbar(
+            message: "Missing cover or pdf file !",
+            title: "Warning",
+            backgroundColor: AppColors.red,
+            snackPosition: SnackPosition.TOP,
+          );
+        } else {
+          ApiCall api = await bookUploadAPI.uploadbooks(
+              bookname: bookname.text,
+              categoryId: categoryId,
+              synopsis: synposis.text,
+              bookcover: coverFile!,
+              bookfile: pdfFile!);
 
-      if (api.status) {
-        pdf = "";
-        pdfFile = null;
-        filename = "";
-        selectfile.value = false;
-        coverImage = "";
-        coverFile = null;
-        selectCover.value = false;
-        bookname.text = "";
-        synposis.text = "";
-        customSnackbar(
-            message: "Upload Book Successfully",
-            backgroundColor: Colors.green,
-            leadingIcon: Icons.check);
+          if (api.status) {
+            Get.find<HomeController>().gettingHomeData();
+            pdf = "";
+            pdfFile = null;
+            filename = "";
+            selectfile.value = false;
+            coverImage = "";
+            coverFile = null;
+            selectCover.value = false;
+            bookname.text = "";
+            synposis.text = "";
+            customSnackbar(
+                message: "Upload Book Successfully",
+                backgroundColor: Colors.green,
+                leadingIcon: Icons.check);
+            Get.back();
+          } else {
+            customSnackbar(message: api.message + " msg");
+          }
+        }
       } else {
-        customSnackbar(message: api.message + " msg");
+        customSnackbar(message: "Please Select Category");
       }
     }
 
@@ -141,11 +155,6 @@ if (result != null) {
   
   
    */
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
   @override
   void onClose() {}

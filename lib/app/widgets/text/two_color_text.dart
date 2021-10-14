@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/themes.dart';
 
 ///It will have two different color in same line of text
@@ -50,7 +51,7 @@ class TwoColorText extends StatelessWidget {
                     fontSize: fontSize1 != null ? fontSize1! : null,
                     fontWeight: isBold1 ? FontWeight.bold : FontWeight.normal,
                     decoration: isUnderline1 ? TextDecoration.underline : null,
-                    color: color2 ?? Themes.pRIMARYCOLORLIGHT,
+                    color: color2 ?? AppColors.black,
                   )),
         ],
       ),

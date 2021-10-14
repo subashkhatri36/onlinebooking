@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
+import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/data/model/author_model.dart';
+import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
 import 'package:onlinebooks/app/widgets/text/header_widget.dart';
@@ -58,7 +60,9 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.network(
-                                    "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg",
+                                    controller.bookDetail!.coverPhoto.isNotEmpty
+                                        ? controller.bookDetail!.coverPhoto
+                                        : "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg",
                                     height: appController.height * .3,
                                     width: appController.width * .4,
                                     fit: BoxFit.fill,
@@ -137,7 +141,7 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
                                         SynposisWidget(
                                           data: controller.bookDetail!.synopsis,
                                         ),
-                                        AuthorWidget()
+                                        const AuthorWidget()
                                       ]),
                                 ),
                               ],
@@ -148,7 +152,12 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
                           width: appController.width * .5,
                           child: CustomButton(
                               label: "Read IT",
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.toNamed(Routes.bookread, arguments: [
+                                  controller.bookDetail!.title,
+                                  controller.bookDetail!.pdffile
+                                ]);
+                              },
                               textColor: AppColors.white,
                               backgroundColor: AppColors.orangeColor),
                         ),
@@ -172,7 +181,7 @@ class AuthorWidget extends StatelessWidget {
     controller.loadAuthorInfo();
     return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Obx(() => controller.isAuthorLoad.value
+        child: Obx(() => !controller.isAuthorLoad.value
             ? Center(
                 child: Column(
                   children: const [
@@ -186,10 +195,22 @@ class AuthorWidget extends StatelessWidget {
                 ? const Center(
                     child: NormalText("No Author Found"),
                   )
-                : Row(
+                : Column(
                     children: [
-                      Image.network(controller.author!.profilePic,
-                          height: 100, width: 100, fit: BoxFit.fill)
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: controller.author!.profilePic.isNotEmpty
+                            ? Image.network(controller.author!.profilePic,
+                                height: 100, width: 100, fit: BoxFit.fill)
+                            : Image.asset(AppImage.appLogo,
+                                height: 100, width: 100, fit: BoxFit.fill),
+                      ),
+                      NormalText(
+                        controller.author!.name,
+                        isBold: true,
+                      ),
+                      const HeightWidget(h: .01),
+                      NormalText(controller.author!.about),
                     ],
                   )));
   }

@@ -24,12 +24,12 @@ class BookdecriptionController extends GetxController
   }
 
   loadBookDetails(int id) async {
-    print(id);
     isloadingBook.toggle();
     bookId = id.toString();
     ApiCall apiCall = await bookUploadAPI.loadBookDetails(bookId);
     if (apiCall.status) {
       String authoriId = apiCall.response.authorId;
+      print(authoriId);
       bookDetail = BookDetail(
           authorId: apiCall.response.authorId,
           title: apiCall.response.title,

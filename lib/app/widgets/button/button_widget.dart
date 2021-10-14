@@ -45,7 +45,7 @@ class CustomButton extends StatelessWidget {
 
 //it will give round shape button
 class CustomRoundButton extends StatelessWidget {
-  CustomRoundButton({
+  const CustomRoundButton({
     Key? key,
     required this.label,
     required this.onPressed,

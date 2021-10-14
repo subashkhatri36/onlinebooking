@@ -19,9 +19,10 @@ class TrandingListItems extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String image = // bookImage.isEmpty
-        "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg";
-    //: bookImage;
+    print(bookImage);
+    String image = bookImage.isEmpty
+        ? "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg"
+        : bookImage;
     return Container(
       width: (appController.width * .4),
       margin:

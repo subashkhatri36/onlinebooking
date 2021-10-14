@@ -13,6 +13,9 @@ abstract class Routes {
   static const uploadbooks = _Paths.uploadbooks;
   static const bookdescription = _Paths.bookdescription;
   static const booklist = _Paths.booklist;
+  static const bookread = _Paths.bookread;
+  static const savedbook = _Paths.savedbook;
+  static const transaction = _Paths.transaction;
 }
 
 abstract class _Paths {
@@ -25,4 +28,7 @@ abstract class _Paths {
   static const uploadbooks = '/uploadbooks';
   static const bookdescription = '/bookdecription';
   static const booklist = '/booklist';
+  static const bookread = '/bookread';
+  static const savedbook = '/savedbook';
+  static const transaction = '/transaction';
 }

@@ -36,9 +36,18 @@ class MainDrawer extends StatelessWidget {
         ),
         ListTile(
           leading: const Icon(Icons.account_box),
-          title: const Text("profile"),
+          title: const Text("Saved Books"),
           onTap: () {
             Navigator.pop(context);
+            Get.toNamed(Routes.savedbook);
+          },
+        ),
+        ListTile(
+          leading: const Icon(Icons.account_box),
+          title: const Text("My Transaction"),
+          onTap: () {
+            Navigator.of(context).pop(true);
+            Get.toNamed(Routes.transaction);
           },
         ),
         ListTile(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onlinebooks/app/constant/app_color.dart';
 
 class HeaderText extends StatelessWidget {
   final double? fontSize;
@@ -7,6 +8,7 @@ class HeaderText extends StatelessWidget {
   final String text;
   final bool isCentered;
   final Color? textColor;
+  final int maxline;
 
   const HeaderText(
     this.text, {
@@ -15,6 +17,7 @@ class HeaderText extends StatelessWidget {
     this.hasUnderline = false,
     this.isCentered = false,
     this.textColor,
+    this.maxline = 1,
   });
 
   @override
@@ -25,8 +28,10 @@ class HeaderText extends StatelessWidget {
           fontSize: fontSize,
           fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
           decoration: hasUnderline ? TextDecoration.underline : null,
-          color: textColor ?? Theme.of(context).primaryColorLight),
+          color: textColor ?? AppColors.black),
       textAlign: isCentered ? TextAlign.center : null,
+      maxLines: maxline,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

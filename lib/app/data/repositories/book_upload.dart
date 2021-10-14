@@ -7,8 +7,6 @@ import 'package:onlinebooks/app/data/model/author_model.dart';
 import 'package:onlinebooks/app/data/model/book_detail_model.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
-import 'package:async/async.dart';
 
 BookAPI bookUploadAPI = BookAPI();
 
@@ -30,7 +28,6 @@ class BookAPI {
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
         var jsonResponse =
             await json.decode(response.body); //["message"].toString();
 
@@ -82,17 +79,17 @@ class BookAPI {
       final headers = {
         "token": appController.accesstoken,
       };
+      final body = {
+        "author_id": authorId,
+      };
 
       final response = await http.post(
-        Uri.parse(Api.bookDetails),
-        body: {
-          "author_id": authorId,
-        },
+        Uri.parse(Api.aboutAuthor),
+        body: body,
         headers: headers,
       );
 
       if (response.statusCode == 200) {
-        print(response.body);
         var jsonResponse =
             await json.decode(response.body); //["message"].toString();
 
@@ -143,7 +140,6 @@ class BookAPI {
         "token": appController.accesstoken,
         "Content-Type": "multipart/form-data",
       };
-      print(headers);
 
       request.files.add(http.MultipartFile(
           'cover_image',
@@ -168,7 +164,7 @@ class BookAPI {
       var response = await request.send();
 
       // listen for response
-      await response.stream.transform(utf8.decoder).listen((value) {
+      response.stream.transform(utf8.decoder).listen((value) {
         if (response.statusCode == 200) {
           var jsonResponse = json.decode(value); //["message"].toString();
 
@@ -177,7 +173,6 @@ class BookAPI {
             userapi.status = true;
           } else {
             userapi.status = false;
-            print("here");
           }
           userapi.message = jsonResponse["message"].toString();
 
@@ -190,7 +185,6 @@ class BookAPI {
       return userapi;
     } catch (e) {
       userapi.status = false;
-      print(e);
       userapi.message = e.toString();
     }
     return userapi;
