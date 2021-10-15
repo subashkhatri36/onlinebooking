@@ -20,11 +20,10 @@ class SplashController extends GetxController {
 
   route() async {
     await appController.init();
-    //  print(appController.accesstoken);
     if (appController.accesstoken.isNotEmpty) {
       Get.offNamed(Routes.home);
     } else {
-      Get.offNamed(Routes.login);
+      Get.offAllNamed(Routes.login);
     }
   }
 

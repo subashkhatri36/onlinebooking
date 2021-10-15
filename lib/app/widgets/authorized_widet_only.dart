@@ -6,7 +6,7 @@ import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 
 authorizedAccess(Widget child) {
-  if (!appController.authorized) {
+  if (!appController.authorized && appController.accesstoken.isEmpty) {
     return const AuthWidget();
   } else {
     return child;
@@ -32,11 +32,14 @@ class _AuthWidgetState extends State<AuthWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Center(
-      child: CustomButton(
-          onPressed: () {
-            Get.offNamed(Routes.login);
-          },
-          label: 'Go to LogIn'),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: CustomButton(
+            onPressed: () {
+              Get.offAllNamed(Routes.login);
+            },
+            label: 'Go to LogIn'),
+      ),
     ));
   }
 

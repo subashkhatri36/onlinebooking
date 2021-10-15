@@ -6,6 +6,7 @@ import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
+import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
 import 'package:onlinebooks/app/widgets/loading_widget.dart';
@@ -21,139 +22,143 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
   @override
   Widget build(BuildContext context) {
     controller.loadBookDetails(bookid);
-    return Scaffold(
-      body: SafeArea(
-        child: Obx(
-          () => controller.isloadingBook.value
-              ? const LoadingWidget()
-              : controller.bookDetail == null
-                  ? const Center(
-                      child: NormalText("No Data Found Try Again."),
-                    )
-                  : Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(
-                              Constants.defaultPadding / 2),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: const Icon(Icons.keyboard_backspace)),
-                              Center(
-                                  child: Container(
-                                padding: const EdgeInsets.only(top: 8.0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: Image.network(
-                                    controller.bookDetail!.coverPhoto.isNotEmpty
-                                        ? controller.bookDetail!.coverPhoto
-                                        : "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg",
-                                    height: appController.height * .3,
-                                    width: appController.width * .4,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              )),
-                              InkWell(
-                                onTap: () {
-                                  controller.bookmarks();
-                                },
-                                child: Obx(
-                                  () => controller.isbookmarked.value
-                                      ? Icon(
-                                          Icons.bookmark,
-                                          size: 30,
-                                          color: AppColors.orangeColor,
-                                        )
-                                      : Icon(
-                                          Icons.bookmark_border_outlined,
-                                          size: 30,
-                                          color: AppColors.orangeColor,
-                                        ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: appController.width,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: Constants.defaultMargin),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              HeaderText(
-                                controller.bookDetail!.title,
-                                textColor: AppColors.black,
-                              ),
-                              const HeightWidget(h: .01),
-                              NormalText(
-                                "Author : ${controller.bookDetail!.author}",
-                                color: AppColors.black,
-                                isBold: true,
-                              ),
-                            ],
-                          ),
-                        ),
-                        //tabcontroller
-                        Expanded(
-                          child: DefaultTabController(
-                            length: 2,
-                            child: Column(
+    return authorizedAccess(
+      Scaffold(
+        body: SafeArea(
+          child: Obx(
+            () => controller.isloadingBook.value
+                ? const LoadingWidget()
+                : controller.bookDetail == null
+                    ? const Center(
+                        child: NormalText("No Data Found Try Again."),
+                      )
+                    : Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(
+                                Constants.defaultPadding / 2),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TabBar(
-                                  indicatorWeight: 5.0,
-                                  labelColor: Colors.black,
-                                  controller: controller.tabController,
-                                  labelStyle: Theme.of(context)
-                                      .textTheme
-                                      .bodyText1!
-                                      .copyWith(fontSize: 14),
-                                  tabs: const [
-                                    Tab(
-                                      text: 'Synopsis',
+                                IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: const Icon(Icons.keyboard_backspace)),
+                                Center(
+                                    child: Container(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.network(
+                                      controller
+                                              .bookDetail!.coverPhoto.isNotEmpty
+                                          ? controller.bookDetail!.coverPhoto
+                                          : "https://images-na.ssl-images-amazon.com/images/I/81dQwQlmAXL.jpg",
+                                      height: appController.height * .3,
+                                      width: appController.width * .4,
+                                      fit: BoxFit.fill,
                                     ),
-                                    Tab(
-                                      text: 'About Author',
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                  child: TabBarView(
-                                      controller: controller.tabController,
-                                      children: [
-                                        SynposisWidget(
-                                          data: controller.bookDetail!.synopsis,
-                                        ),
-                                        const AuthorWidget()
-                                      ]),
+                                  ),
+                                )),
+                                InkWell(
+                                  onTap: () {
+                                    controller.bookmarks();
+                                  },
+                                  child: Obx(
+                                    () => controller.isbookmarked.value
+                                        ? Icon(
+                                            Icons.bookmark,
+                                            size: 30,
+                                            color: AppColors.orangeColor,
+                                          )
+                                        : Icon(
+                                            Icons.bookmark_border_outlined,
+                                            size: 30,
+                                            color: AppColors.orangeColor,
+                                          ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          width: appController.width * .5,
-                          child: CustomButton(
-                              label: "Read IT",
-                              onPressed: () {
-                                Get.toNamed(Routes.bookread, arguments: [
+                          Container(
+                            width: appController.width,
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: Constants.defaultMargin),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                HeaderText(
                                   controller.bookDetail!.title,
-                                  controller.bookDetail!.pdffile
-                                ]);
-                              },
-                              textColor: AppColors.white,
-                              backgroundColor: AppColors.orangeColor),
-                        ),
-                        const HeightWidget(h: .01),
-                      ],
-                    ),
+                                  textColor: AppColors.black,
+                                ),
+                                const HeightWidget(h: .01),
+                                NormalText(
+                                  "Author : ${controller.bookDetail!.author}",
+                                  color: AppColors.black,
+                                  isBold: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                          //tabcontroller
+                          Expanded(
+                            child: DefaultTabController(
+                              length: 2,
+                              child: Column(
+                                children: [
+                                  TabBar(
+                                    indicatorWeight: 5.0,
+                                    labelColor: Colors.black,
+                                    controller: controller.tabController,
+                                    labelStyle: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(fontSize: 14),
+                                    tabs: const [
+                                      Tab(
+                                        text: 'Synopsis',
+                                      ),
+                                      Tab(
+                                        text: 'About Author',
+                                      ),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: TabBarView(
+                                        controller: controller.tabController,
+                                        children: [
+                                          SynposisWidget(
+                                            data:
+                                                controller.bookDetail!.synopsis,
+                                          ),
+                                          const AuthorWidget()
+                                        ]),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: appController.width * .5,
+                            child: CustomButton(
+                                label: "Read IT",
+                                onPressed: () {
+                                  Get.toNamed(Routes.bookread, arguments: [
+                                    controller.bookDetail!.title,
+                                    controller.bookDetail!.pdffile
+                                  ]);
+                                },
+                                textColor: AppColors.white,
+                                backgroundColor: AppColors.orangeColor),
+                          ),
+                          const HeightWidget(h: .01),
+                        ],
+                      ),
+          ),
         ),
       ),
     );

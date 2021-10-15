@@ -30,6 +30,8 @@ class AppController extends GetxController {
     accesstoken = await shareprefrence.read(Strings.logintoken);
 
     if (accesstoken.isNotEmpty) {
+      accesstoken = accesstoken.replaceAll(RegExp(r'["]+'), '');
+
       authorized = true;
     } else {
       authorized = false;
@@ -39,7 +41,6 @@ class AppController extends GetxController {
 
   loadOfflineDatabase() async {
     userInfoData.value = false;
-
     if (user != null) {
       user = null;
     }

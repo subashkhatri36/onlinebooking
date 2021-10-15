@@ -5,6 +5,8 @@ import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/constant/string.dart';
+import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
 import 'package:onlinebooks/app/modules/home/widgets/category_items.dart';
 import 'package:onlinebooks/app/modules/home/widgets/drawer.dart';
@@ -24,220 +26,232 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    // controller.gettingHomeData();
-    return authorizedAccess(WillPopScope(
-      onWillPop: () async {
-        final data = await showDialog(
-          context: context,
-          builder: (ctx) => AlertDialog(
-            title: const Text("Warning !"),
-            content: const Text("Do you Want to exit application ?"),
-            actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(true);
-                      },
-                      label: 'Yes'),
-                  CustomButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(false);
-                      },
-                      label: 'No')
-                ],
-              )
-            ],
-          ),
-        );
-        return data;
-      },
-      child: Scaffold(
-        key: controller.scaffoldKey,
-        drawer: const MainDrawer(),
-        body: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                width: appController.width,
-                height: appController.height * .08,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: Constants.defaultPadding / 2),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+    return WillPopScope(
+        onWillPop: () async {
+          final data = await showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+              title: const Text("Warning !"),
+              content: const Text("Do you Want to exit application ?"),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    InkWell(
-                      onTap: () {
-                        if (controller.scaffoldKey.currentState!.isDrawerOpen) {
-                          controller.scaffoldKey.currentState!.openEndDrawer();
-                        } else {
-                          controller.scaffoldKey.currentState!.openDrawer();
-                        }
-                      },
-                      child: const Padding(
-                        padding: EdgeInsets.only(right: 8.0),
-                        child: Icon(Icons.sort),
-                      ),
-                    ),
-                    Expanded(
-                      child: NormalText(controller.homeTitle,
-                          isBold: true,
-                          fontSize: Constants.defaultFontSize + 5),
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: InkWell(
-                            onTap: () {
-                              Get.toNamed(Routes.search);
-                            },
-                            child: const Icon(Icons.search))),
-                    Stack(
+                    CustomButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        label: 'Yes'),
+                    CustomButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        label: 'No')
+                  ],
+                )
+              ],
+            ),
+          );
+          return data;
+        },
+        child: authorizedAccess(
+          Scaffold(
+            key: controller.scaffoldKey,
+            drawer: const MainDrawer(),
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Container(
+                    width: appController.width,
+                    height: appController.height * .08,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: Constants.defaultPadding / 2),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         InkWell(
-                          onTap: () async {
-                            return userdialog(context);
-                            //Get.toNamed(Routes.profile);
+                          onTap: () {
+                            if (controller
+                                .scaffoldKey.currentState!.isDrawerOpen) {
+                              controller.scaffoldKey.currentState!
+                                  .openEndDrawer();
+                            } else {
+                              controller.scaffoldKey.currentState!.openDrawer();
+                            }
                           },
-                          child: CircleAvatar(
-                            radius: 20,
-                            backgroundColor: AppColors.black.withOpacity(.10),
-                            child: controller.profileData == null
-                                ? const CircleAvatar(
-                                    radius: 16,
-                                    backgroundImage:
-                                        AssetImage(AppImage.appLogo),
-                                  )
-                                : controller.profileData!.profile.isEmpty
+                          child: const Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Icon(Icons.sort),
+                          ),
+                        ),
+                        Expanded(
+                          child: NormalText(controller.homeTitle,
+                              isBold: true,
+                              fontSize: Constants.defaultFontSize + 5),
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(right: 8.0),
+                            child: InkWell(
+                                onTap: () {
+                                  Get.toNamed(Routes.search);
+                                },
+                                child: const Icon(Icons.search))),
+                        Stack(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                return userdialog(context);
+                                //Get.toNamed(Routes.profile);
+                              },
+                              child: CircleAvatar(
+                                radius: 20,
+                                backgroundColor:
+                                    AppColors.black.withOpacity(.10),
+                                child: controller.profileData == null
                                     ? const CircleAvatar(
                                         radius: 16,
                                         backgroundImage:
                                             AssetImage(AppImage.appLogo),
                                       )
-                                    : CircleAvatar(
-                                        radius: 16,
-                                        backgroundImage: NetworkImage(
-                                            controller.profileData!.profile),
-                                      ),
-                          ),
-                        ),
-                        // Positioned(
-                        //     top: 0,
-                        //     right: 0,
-                        //     child: CircleAvatar(
-                        //       radius: 8,
-                        //       backgroundColor: AppColors.orangeColor,
-                        //       child: const NormalText('1',
-                        //           color: AppColors.white,
-                        //           fontSize: Constants.defaultFontSize - 5),
-                        //     ))
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: Constants.defaultPadding / 1.3),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const HeaderTitle(
-                          headerText: 'Trending',
-                        ),
-                        SizedBox(
-                            width: appController.width,
-                            height: appController.height * .35,
-                            child: Obx(
-                              () => controller.isloadingdata.value
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : controller.homeList.isEmpty
-                                      ? const Center(
-                                          child: NormalText("No Books"),
-                                        )
-                                      : RefreshIndicator(
-                                          onRefresh: () async {
-                                            await controller.gettingHomeData();
-                                          },
-                                          child: ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount: controller.homeList[0]
-                                                  .bookdetail.length,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) {
-                                                BookDetailInfo b = controller
-                                                    .homeList[0]
-                                                    .bookdetail[index];
-
-                                                return InkWell(
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                        Routes.bookdescription,
-                                                        arguments: b.id);
-                                                  },
-                                                  child: TrandingListItems(
-                                                    bookImage: b.coverPhoto,
-                                                    bookname: b.title,
-                                                    authorname: b.author,
-                                                    backgroundColor:
-                                                        AppColors.list1color,
-                                                  ),
-                                                );
-                                              }),
-                                        ),
-                            )),
-                        const HeightWidget(h: .02),
-                        const HeaderTitle(
-                          headerText: 'Categories',
-                        ),
-                        SizedBox(
-                            width: appController.width,
-                            height: appController.height * .35,
-                            child: Obx(
-                              () => controller.isloadingdata.value
-                                  ? const Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : controller.homeList.isEmpty
-                                      ? const Center(
-                                          child: CircularProgressIndicator(),
-                                        )
-                                      : GridView.count(
-                                          crossAxisCount: 2,
-                                          childAspectRatio: 4 / 1,
-                                          crossAxisSpacing: 3,
-                                          mainAxisSpacing: 6,
-                                          children: controller
-                                              .homeList[0].categorylist
-                                              .map((e) => InkWell(
-                                                    onTap: () {
-                                                      Get.toNamed(
-                                                          Routes.booklist,
-                                                          arguments: [
-                                                            e.name,
-                                                            e.id.toString()
-                                                          ]);
-                                                    },
-                                                    child: CategoryItemList(
-                                                      e: e,
-                                                    ),
-                                                  ))
-                                              .toList(),
-                                        ),
-                            )),
+                                    : controller.profileData!.profile.isEmpty
+                                        ? const CircleAvatar(
+                                            radius: 16,
+                                            backgroundImage:
+                                                AssetImage(AppImage.appLogo),
+                                          )
+                                        : CircleAvatar(
+                                            radius: 16,
+                                            backgroundImage: NetworkImage(
+                                                controller
+                                                    .profileData!.profile),
+                                          ),
+                              ),
+                            ),
+                            // Positioned(
+                            //     top: 0,
+                            //     right: 0,
+                            //     child: CircleAvatar(
+                            //       radius: 8,
+                            //       backgroundColor: AppColors.orangeColor,
+                            //       child: const NormalText('1',
+                            //           color: AppColors.white,
+                            //           fontSize: Constants.defaultFontSize - 5),
+                            //     ))
+                          ],
+                        )
                       ],
                     ),
                   ),
-                ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: Constants.defaultPadding / 1.3),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const HeaderTitle(
+                              headerText: 'Trending',
+                            ),
+                            SizedBox(
+                                width: appController.width,
+                                height: appController.height * .35,
+                                child: Obx(
+                                  () => controller.isloadingdata.value
+                                      ? const Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : controller.homeList.isEmpty
+                                          ? const Center(
+                                              child: NormalText("No Books"),
+                                            )
+                                          : RefreshIndicator(
+                                              onRefresh: () async {
+                                                await controller
+                                                    .gettingHomeData();
+                                              },
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: controller
+                                                      .homeList[0]
+                                                      .bookdetail
+                                                      .length,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    BookDetailInfo b =
+                                                        controller.homeList[0]
+                                                            .bookdetail[index];
+
+                                                    return InkWell(
+                                                      onTap: () {
+                                                        Get.toNamed(
+                                                            Routes
+                                                                .bookdescription,
+                                                            arguments: b.id);
+                                                      },
+                                                      child: TrandingListItems(
+                                                        bookImage: b.coverPhoto,
+                                                        bookname: b.title,
+                                                        authorname: b.author,
+                                                        backgroundColor:
+                                                            AppColors
+                                                                .list1color,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
+                                )),
+                            const HeightWidget(h: .02),
+                            const HeaderTitle(
+                              headerText: 'Categories',
+                            ),
+                            SizedBox(
+                                width: appController.width,
+                                height: appController.height * .4,
+                                child: Obx(
+                                  () => controller.isloadingdata.value
+                                      ? const Center(
+                                          child: CircularProgressIndicator(),
+                                        )
+                                      : controller.homeList.isEmpty
+                                          ? const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            )
+                                          : GridView.count(
+                                              crossAxisCount: 2,
+                                              childAspectRatio: 4 / 1,
+                                              crossAxisSpacing: 3,
+                                              mainAxisSpacing: 6,
+                                              children: controller
+                                                  .homeList[0].categorylist
+                                                  .map((e) => InkWell(
+                                                        onTap: () {
+                                                          Get.toNamed(
+                                                              Routes.booklist,
+                                                              arguments: [
+                                                                e.name,
+                                                                e.id.toString()
+                                                              ]);
+                                                        },
+                                                        child: CategoryItemList(
+                                                          e: e,
+                                                        ),
+                                                      ))
+                                                  .toList(),
+                                            ),
+                                )),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
-        ),
-      ),
-    ));
+        ));
   }
 
   Future<void> userdialog(BuildContext context) {

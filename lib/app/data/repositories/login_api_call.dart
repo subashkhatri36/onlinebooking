@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:onlinebooks/app/constant/api_link.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
+import 'package:onlinebooks/app/constant/string.dart';
+import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:onlinebooks/app/data/model/user.dart';
@@ -62,6 +64,7 @@ class LoginAPI {
           String lastloginIp = jsonResponse["data"]["last_login_ip"].toString();
           String token = jsonResponse["data"]["token"].toString();
           appController.accesstoken = token;
+
           appController.user = User(
               id: int.parse(id),
               name: name,
@@ -70,6 +73,9 @@ class LoginAPI {
                   DateTime.fromMicrosecondsSinceEpoch(int.parse(lastlogin)),
               loginIp: lastloginIp,
               token: token);
+
+          shareprefrence.save(Strings.userInfo, appController.user!.toJson());
+          shareprefrence.save(Strings.logintoken, appController.accesstoken);
         } else {
           userapi.status = false;
           userapi.message = jsonResponse["message"].toString();
@@ -102,7 +108,7 @@ class LoginAPI {
     try {
       if (response.statusCode == 200) {
         var jsonResponse = json.decode(response.body); //["message"].toString();
-        print(jsonResponse);
+
         String val = jsonResponse["status"].toString();
         if (val.toLowerCase() == 'true') {
           userapi.status = true;

@@ -58,19 +58,6 @@ class HomeController extends GetxController {
       customSnackbar(title: "Error", message: apiCall.message);
     }
 
-    // List<CategoryList> categoryLists = [
-    //   CategoryList(id: 1, name: 'Drama', image: AppImage.dramaImage),
-    //   CategoryList(id: 1, name: 'Children', image: AppImage.childrenImage),
-    //   CategoryList(id: 1, name: 'Dectative', image: AppImage.dectativeImage),
-    //   CategoryList(id: 1, name: 'Fantasy', image: AppImage.fantasyImage),
-    //   CategoryList(id: 1, name: 'Horror', image: AppImage.horrorImage),
-    //   CategoryList(id: 1, name: 'Melo Drama', image: AppImage.melodramaImage),
-    //   CategoryList(id: 1, name: 'Non Frictions', image: AppImage.nonfriction),
-    //   CategoryList(id: 1, name: 'Poetry', image: AppImage.poetryImage),
-    //   CategoryList(id: 1, name: 'Psychology', image: AppImage.psychologyImage),
-    //   CategoryList(id: 1, name: 'Short Story', image: AppImage.shortImage),
-    // ];
-    // categoryList = categoryLists.obs;
     isloadingdata.toggle();
   }
 

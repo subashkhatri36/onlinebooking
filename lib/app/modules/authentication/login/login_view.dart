@@ -10,6 +10,7 @@ import 'package:onlinebooks/app/modules/authentication/forgetpassword/forget_pas
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/utls/validation.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
+import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
 import 'package:onlinebooks/app/widgets/input/input_widget.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
@@ -20,12 +21,17 @@ class LoginView extends GetView<AuthenticationController> {
 
   @override
   Widget build(BuildContext context) {
+    //for login page
+    final TextEditingController username = TextEditingController();
+    final TextEditingController password = TextEditingController();
+    final GlobalKey<FormState> formkey = GlobalKey<FormState>();
+
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Form(
-            key: controller.formkey,
+            key: formkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -53,7 +59,7 @@ class LoginView extends GetView<AuthenticationController> {
                         height: 10.0,
                       ),
                       InputField(
-                        controller: controller.username,
+                        controller: username,
                         hintText: 'Enter Email',
                         icon: Icons.email,
                         validator: (value) => validateEmail(string: value),
@@ -62,7 +68,7 @@ class LoginView extends GetView<AuthenticationController> {
                         h: .01,
                       ),
                       InputField(
-                        controller: controller.password,
+                        controller: password,
                         hintText: 'Enter Password',
                         validator: (value) => validatePassword(string: value),
                         icon: Icons.lock,
@@ -97,7 +103,17 @@ class LoginView extends GetView<AuthenticationController> {
                                     child: CircularProgressIndicator())
                                 : CustomButton(
                                     onPressed: () {
-                                      controller.login();
+                                      if (formkey.currentState!.validate()) {
+                                        controller.login(
+                                            username.text, password.text);
+                                      } else {
+                                        //custome snackbar
+                                        customSnackbar(
+                                            message:
+                                                'Email or Password not valid !',
+                                            snackPosition: SnackPosition.TOP,
+                                            leadingIcon: Icons.warning);
+                                      }
                                       // Get.to(DashboardView());
                                     },
                                     label: 'Login',

@@ -8,6 +8,7 @@ import 'package:onlinebooks/app/modules/authentication/controllers/authenticatio
 import 'package:onlinebooks/app/routes/app_pages.dart';
 import 'package:onlinebooks/app/utls/validation.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
+import 'package:onlinebooks/app/widgets/custom_snackbar.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
 import 'package:onlinebooks/app/widgets/input/input_withoutborder.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
@@ -18,13 +19,20 @@ class RegisterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //for register page
+    final TextEditingController regusername = TextEditingController();
+    final TextEditingController regname = TextEditingController();
+    final TextEditingController regpassword = TextEditingController();
+    final TextEditingController regconpassword = TextEditingController();
+    final GlobalKey<FormState> registrationformkey = GlobalKey<FormState>();
+
     final controller = Get.find<AuthenticationController>();
     return Scaffold(
       body: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Form(
-            key: controller.registrationformkey,
+            key: registrationformkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -53,30 +61,29 @@ class RegisterView extends StatelessWidget {
                         h: .01,
                       ),
                       InputField(
-                        controller: controller.regname,
+                        controller: regname,
                         hintText: 'Full name',
                         icon: Icons.account_box,
                         validator: (value) => validateIsEmpty(string: value),
                       ),
                       InputField(
-                        controller: controller.regusername,
+                        controller: regusername,
                         hintText: 'Enter Email',
                         icon: Icons.email,
                         validator: (value) => validateEmail(string: value),
                       ),
                       InputField(
-                        controller: controller.regpassword,
+                        controller: regpassword,
                         hintText: 'Enter Password',
                         validator: (value) => validatePassword(string: value),
                         icon: Icons.lock,
                         obscureText: true,
                       ),
                       InputField(
-                        controller: controller.regconpassword,
+                        controller: regconpassword,
                         hintText: 'Confirmed Password',
                         validator: (value) => validatePasswordConfirm(
-                            cPassword: value,
-                            password: controller.regpassword.text),
+                            cPassword: value, password: regpassword.text),
                         icon: Icons.lock,
                         obscureText: true,
                       ),
@@ -97,7 +104,20 @@ class RegisterView extends StatelessWidget {
                         width: appController.width,
                         child: CustomButton(
                           onPressed: () {
-                            controller.registration();
+                            if (registrationformkey.currentState!.validate()) {
+                              controller.registration(
+                                regusername.text,
+                                regname.text,
+                                regpassword.text,
+                                regconpassword.text,
+                              );
+                            } else {
+                              //custome snackbar
+                              customSnackbar(
+                                  message: 'Email or Password not valid !',
+                                  snackPosition: SnackPosition.TOP,
+                                  leadingIcon: Icons.warning);
+                            }
                             // Get.to(DashboardView());
                           },
                           label: 'Register',

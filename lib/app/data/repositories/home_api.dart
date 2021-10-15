@@ -46,7 +46,7 @@ class HomeAPI {
                 coverPhoto: book["cover_photo"].toString(),
                 synopsis: book["synopsis"].toString()));
           }
-          if (searchkeyword.isNotEmpty) {
+          if (searchkeyword.isEmpty) {
             for (var category in jsonResponse["data"]["categoryList"]) {
               categorylist.add(CategoryList(
                   id: int.parse(category["id"].toString()),
@@ -63,11 +63,12 @@ class HomeAPI {
         } else {
           userapi.status = false;
           userapi.message = jsonResponse["message"].toString();
-          if (userapi.message == "Invalid Token") {
-            shareprefrence.remove(Strings.logintoken);
-            shareprefrence.remove(Strings.userInfo);
-            Get.offAllNamed(Routes.login);
-          }
+
+          // if (userapi.message == "Invalid Token") {
+          //   shareprefrence.remove(Strings.logintoken);
+          //   shareprefrence.remove(Strings.userInfo);
+          //   Get.offAllNamed(Routes.login);
+          // }
         }
 
         // return ApiCall.fromMap(jsonResponse);
