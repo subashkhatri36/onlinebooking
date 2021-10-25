@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/modules/booklist/widgets/book_list_widget.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
@@ -50,28 +51,35 @@ class SearchView extends GetView<SearchController> {
                           },
                           backgroundColor: Colors.green,
                           textColor: AppColors.white,
-                        ))
+                        )),
                   ],
                 ),
                 const HeightWidget(h: .01),
                 Expanded(
-                    child: Obx(
-                  () => controller.isloadingdata.isTrue
-                      ? const LoadingWidget()
-                      : controller.homeList == null
-                          ? const NormalText(
-                              "No Data",
-                              isBold: true,
-                            )
-                          : controller.homeList!.bookdetail.isEmpty
-                              ? const NormalText(
-                                  "No Data",
-                                  isBold: true,
-                                )
-                              : BookListWidget(
-                                  booklistmodel:
-                                      controller.homeList!.bookdetail,
-                                ),
+                    child: Column(
+                  children: [
+                    Expanded(
+                      child: Obx(
+                        () => controller.isloadingdata.isTrue
+                            ? const LoadingWidget()
+                            : controller.homeList == null
+                                ? const NormalText(
+                                    "No Data",
+                                    isBold: true,
+                                  )
+                                : controller.homeList!.bookdetail.isEmpty
+                                    ? const NormalText(
+                                        "No Data",
+                                        isBold: true,
+                                      )
+                                    : BookListWidget(
+                                        booklistmodel:
+                                            controller.homeList!.bookdetail,
+                                      ),
+                      ),
+                    ),
+                    const AdmobBannerAdWidget(),
+                  ],
                 ))
               ],
             ),

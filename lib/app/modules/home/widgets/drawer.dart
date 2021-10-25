@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/asset_image.dart';
-import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/modules/home/controllers/home_controller.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
 

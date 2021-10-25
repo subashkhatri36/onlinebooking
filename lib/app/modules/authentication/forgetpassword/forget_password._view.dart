@@ -104,7 +104,7 @@ class ForgetPasswordView extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text(
-                            "Email Send Please Check your email account and reset your password.\Thank you.",
+                            "Email Send Please Check your email account and reset your password.\nThank you.",
                             style:
                                 TextStyle(fontSize: 22.0, color: Colors.green),
                             textAlign: TextAlign.center),

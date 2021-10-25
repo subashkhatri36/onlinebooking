@@ -8,6 +8,7 @@ import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/modules/booklist/widgets/book_list_widget.dart';
 import 'package:onlinebooks/app/modules/profile/widgets/insert_update_profile_widget.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
@@ -157,6 +158,7 @@ class ProfileView extends GetView<ProfileController> {
                                   BookListWidget(
                                       booklistmodel:
                                           controller.profileData!.booklist),
+                                  const AdmobBannerAdWidget(),
                                 ],
                               ),
                             ))

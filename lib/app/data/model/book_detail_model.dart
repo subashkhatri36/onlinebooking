@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class BookDetail {
   final String authorId;
   final String title;

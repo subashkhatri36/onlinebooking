@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -39,7 +40,12 @@ class BookreadView extends GetView<BookreadController> {
           body: Padding(
               padding: const EdgeInsets.all(Constants.defaultPadding),
               child: argument[1].isNotEmpty
-                  ? SfPdfViewer.network(argument[1])
+                  ? Column(
+                      children: [
+                        Expanded(child: SfPdfViewer.network(argument[1])),
+                        const AdmobBannerAdWidget(),
+                      ],
+                    )
                   : Container())),
     );
   }

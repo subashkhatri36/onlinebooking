@@ -11,11 +11,6 @@ class SearchController extends GetxController {
 
   Home? homeList;
 
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
   void searchBox() async {
     isloadingdata.toggle();
     if (searchtext.text.isNotEmpty) {
@@ -35,11 +30,6 @@ class SearchController extends GetxController {
     }
 
     isloadingdata.toggle();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
   }
 
   @override

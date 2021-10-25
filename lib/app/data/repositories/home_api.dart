@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/api_link.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
-import 'package:onlinebooks/app/constant/string.dart';
-import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
 import 'package:onlinebooks/app/data/model/category_list.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:onlinebooks/app/routes/app_pages.dart';
 
 HomeAPI homeApi = HomeAPI();
 

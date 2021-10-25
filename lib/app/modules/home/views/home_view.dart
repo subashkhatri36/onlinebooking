@@ -5,13 +5,12 @@ import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
-import 'package:onlinebooks/app/constant/string.dart';
-import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/book_detail.dart';
 import 'package:onlinebooks/app/modules/home/widgets/category_items.dart';
 import 'package:onlinebooks/app/modules/home/widgets/drawer.dart';
 import 'package:onlinebooks/app/modules/home/widgets/tranding_list_item_widget.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/clipper/header_clip_path.dart';
@@ -203,12 +202,13 @@ class HomeView extends GetView<HomeController> {
                                             ),
                                 )),
                             const HeightWidget(h: .02),
+                            const AdmobBannerAdWidget(),
                             const HeaderTitle(
                               headerText: 'Categories',
                             ),
                             SizedBox(
                                 width: appController.width,
-                                height: appController.height * .4,
+                                height: appController.height * .45,
                                 child: Obx(
                                   () => controller.isloadingdata.value
                                       ? const Center(
@@ -220,6 +220,8 @@ class HomeView extends GetView<HomeController> {
                                                   CircularProgressIndicator(),
                                             )
                                           : GridView.count(
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
                                               crossAxisCount: 2,
                                               childAspectRatio: 4 / 1,
                                               crossAxisSpacing: 3,
@@ -242,6 +244,7 @@ class HomeView extends GetView<HomeController> {
                                                   .toList(),
                                             ),
                                 )),
+                            const AdmobBannerAdWidget(),
                           ],
                         ),
                       ),

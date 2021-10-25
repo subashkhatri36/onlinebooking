@@ -6,6 +6,7 @@ import 'package:onlinebooks/app/constant/asset_image.dart';
 import 'package:onlinebooks/app/constant/constants.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/button/button_widget.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
@@ -142,11 +143,13 @@ class BookdecriptionView extends GetView<BookdecriptionController> {
                               ),
                             ),
                           ),
+                          const AdmobBannerAdWidget(),
                           SizedBox(
                             width: appController.width * .5,
                             child: CustomButton(
                                 label: "Read IT",
-                                onPressed: () {
+                                onPressed: () async {
+                                  await admobController.showInstAds();
                                   Get.toNamed(Routes.bookread, arguments: [
                                     controller.bookDetail!.title,
                                     controller.bookDetail!.pdffile

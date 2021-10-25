@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/modules/booklist/widgets/book_list_widget.dart';
+import 'package:onlinebooks/app/widgets/ad_mob_widget.dart';
 import 'package:onlinebooks/app/widgets/authorized_widet_only.dart';
 import 'package:onlinebooks/app/widgets/height_width.dart';
 import 'package:onlinebooks/app/widgets/text/normal_widget.dart';
@@ -52,8 +53,15 @@ class BooklistView extends GetView<BooklistController> {
                 ))
               : controller.bookdetailList.isEmpty
                   ? const Center(child: NormalText("No Books"))
-                  : BookListWidget(
-                      booklistmodel: controller.bookdetailList,
+                  : Column(
+                      children: [
+                        Expanded(
+                          child: BookListWidget(
+                            booklistmodel: controller.bookdetailList,
+                          ),
+                        ),
+                        const AdmobBannerAdWidget(),
+                      ],
                     ),
         ),
       ),

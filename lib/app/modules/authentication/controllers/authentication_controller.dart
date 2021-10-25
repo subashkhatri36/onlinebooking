@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:onlinebooks/app/constant/app_color.dart';
 import 'package:onlinebooks/app/constant/controller.dart';
-import 'package:onlinebooks/app/constant/string.dart';
-import 'package:onlinebooks/app/core/service/storage_service/shared_preference.dart';
 import 'package:onlinebooks/app/data/model/response_model.dart';
 import 'package:onlinebooks/app/data/repositories/login_api_call.dart';
 import 'package:onlinebooks/app/routes/app_pages.dart';
